@@ -11,7 +11,11 @@
         android:theme="@style/Theme.CloudCards">
         <activity
             android:name=".Homepage"
-            android:exported="true" />
+            android:exported="true" >
+            <intent-filter>
+                
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
