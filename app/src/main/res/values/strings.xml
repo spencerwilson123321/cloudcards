@@ -3,4 +3,6 @@
     <string name="menu">Menu</string>
     <string name="next">Next</string>
     <string name="back">Back</string>
+    <string name="sign_in">Sign In</string>
+    <string name="register">No Account? Register Now.</string>
 </resources>
