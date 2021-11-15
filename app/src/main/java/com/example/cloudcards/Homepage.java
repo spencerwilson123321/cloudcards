@@ -64,11 +64,16 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
     Uri image_uri;
     String cameraPermission[];
     String storagePermission[];
+    String name;
+
+    private APIHelper API;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.homepage);
+
+        API = new APIHelper(this);
 
         // Getting image preview
         image_preview = findViewById(R.id.image_preview);
@@ -91,8 +96,11 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
                         Toast.makeText(getApplicationContext(), "You have clicked" + menuItem.getTitle(), Toast.LENGTH_LONG).show();
                         switch (menuItem.getTitle().toString()) {
                             case "Add Card": takePhoto(menuItem);
+                            break;
                             case "View Collection":startCollectionActivity(menuItem);
+                            break;
                             case "Search Card":startSearchActivity(menuItem);
+                            break;
                         }
                         return true;
                     }
@@ -123,41 +131,23 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
         } else {
             pickCamera();
         }
-//        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//        if (takePictureIntent.resolveActivity(this.getPackageManager()) != null) {
-//            File photoFile = null;
-//            try {
-//                photoFile = createImageFile();
-//            } catch (IOException ex) {
-//                // Error occurred while creating the File
-//            }
-//            // Continue only if the File was successfully created
-//            if (photoFile != null) {
-//                //Uri photoURI = FileProvider.getUriForFile(this,"com.example.cloudcards",photoFile);
-//                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,mCurrentPhotoPath);
-//                this.startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-//            }
-//        }
     }
 
     public void startCollectionActivity(MenuItem menuItem) {
-        try {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-
-            StrictMode.setThreadPolicy(policy);
-            MTGAPI.setConnectTimeout(60);
-            MTGAPI.setReadTimeout(60);
-            MTGAPI.setWriteTimeout(60);
-            List<String> a = new ArrayList<>();
-            a.add("name:avacyn");
-            List<Card> card = CardAPI.getAllCards(a);
-            Toast.makeText(this, card.get(0).getName(), Toast.LENGTH_LONG).show();
-
-        }catch (Exception e) {
-
-        }
-
-
+//        try {
+//            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+//            StrictMode.setThreadPolicy(policy);
+//            MTGAPI.setConnectTimeout(60);
+//            MTGAPI.setReadTimeout(60);
+//            MTGAPI.setWriteTimeout(60);
+//            List<String> a = new ArrayList<>();
+//            a.add("name:avacyn");
+//            List<Card> card = CardAPI.getAllCards(a);
+//            Toast.makeText(this, card.get(0).getName(), Toast.LENGTH_LONG).show();
+//
+//        }catch (Exception e) {
+//
+//        }
     }
 
     public void startSearchActivity(MenuItem menuItem) {
@@ -180,9 +170,6 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
         }
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             CropImage.activity(image_uri).setGuidelines(CropImageView.Guidelines.ON).start(this);
-//            ImageView mImageView = (ImageView) findViewById(R.id.imageView);
-//            mImageView.setImageBitmap(BitmapFactory.decodeFile(mCurrentPhotoPath));
-            //photos = presenter.findPhotos(new Date(Long.MIN_VALUE), new Date(), "", "", "");
         }
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE){
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
@@ -199,22 +186,13 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
                 } else {
                     Frame frame = new Frame.Builder().setBitmap(bitmap).build();
                     SparseArray<TextBlock> items = recognizer.detect(frame);
-                    StringBuilder sb = new StringBuilder();
-                    // Get text from StringBuilder until there is no text.
-                    List<String> a = new ArrayList<>();
-                    for (int i = 0; i < items.size(); i++) {
-                        TextBlock myItem = items.valueAt(i);
-                        sb.append(myItem.getValue());
-                        sb.append("\n");
-                        //a.add("name: " +myItem.getValue());
-                    }
-                    a.add("language: english");
-                    MTGAPI.setConnectTimeout(60);
-                    MTGAPI.setReadTimeout(60);
-                    MTGAPI.setWriteTimeout(60);
-
-                    Card card = CardAPI.getCard(1);
-                    Toast.makeText(this, sb.toString(), Toast.LENGTH_LONG).show();
+                    name = items.valueAt(0).getValue();
+//                    a.add("language: english");
+//                    MTGAPI.setConnectTimeout(60);
+//                    MTGAPI.setReadTimeout(60);
+//                    MTGAPI.setWriteTimeout(60);
+//                    Card card = CardAPI.getCard(1);
+                    Toast.makeText(this, name, Toast.LENGTH_LONG).show();
                 }
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE){
                 Exception error = result.getError();
@@ -225,11 +203,6 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
 
     private void requestCameraPermission() {
         ActivityCompat.requestPermissions(this, cameraPermission, 200);
-    }
-
-    private boolean checkStoragePermissions() {
-        boolean result = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == (PackageManager.PERMISSION_GRANTED);
-        return result;
     }
 
     private boolean checkCameraPermissions() {
