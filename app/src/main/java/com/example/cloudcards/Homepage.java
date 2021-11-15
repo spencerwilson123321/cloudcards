@@ -7,6 +7,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
+
 import android.Manifest;
 import android.content.ContentValues;
 import android.content.Context;
@@ -18,6 +19,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.util.SparseArray;
 import android.view.ContextThemeWrapper;
@@ -42,7 +44,13 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import io.magicthegathering.javasdk.api.CardAPI;
+import io.magicthegathering.javasdk.api.MTGAPI;
+import io.magicthegathering.javasdk.resource.Card;
 
 
 public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemClickListener {
@@ -133,6 +141,22 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
     }
 
     public void startCollectionActivity(MenuItem menuItem) {
+        try {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+            StrictMode.setThreadPolicy(policy);
+            MTGAPI.setConnectTimeout(60);
+            MTGAPI.setReadTimeout(60);
+            MTGAPI.setWriteTimeout(60);
+            List<String> a = new ArrayList<>();
+            a.add("name:avacyn");
+            List<Card> card = CardAPI.getAllCards(a);
+            Toast.makeText(this, card.get(0).getName(), Toast.LENGTH_LONG).show();
+
+        }catch (Exception e) {
+
+        }
+
 
     }
 
@@ -177,11 +201,19 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
                     SparseArray<TextBlock> items = recognizer.detect(frame);
                     StringBuilder sb = new StringBuilder();
                     // Get text from StringBuilder until there is no text.
+                    List<String> a = new ArrayList<>();
                     for (int i = 0; i < items.size(); i++) {
                         TextBlock myItem = items.valueAt(i);
                         sb.append(myItem.getValue());
                         sb.append("\n");
+                        //a.add("name: " +myItem.getValue());
                     }
+                    a.add("language: english");
+                    MTGAPI.setConnectTimeout(60);
+                    MTGAPI.setReadTimeout(60);
+                    MTGAPI.setWriteTimeout(60);
+
+                    Card card = CardAPI.getCard(1);
                     Toast.makeText(this, sb.toString(), Toast.LENGTH_LONG).show();
                 }
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE){
