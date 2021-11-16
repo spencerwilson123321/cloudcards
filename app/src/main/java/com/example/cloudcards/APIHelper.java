@@ -17,8 +17,6 @@ import org.json.JSONObject;
 
 import java.net.HttpURLConnection;
 
-//import io.magicthegathering.javasdk.api.CardAPI;
-//import io.magicthegathering.javasdk.resource.Card;
 
 public class APIHelper {
 

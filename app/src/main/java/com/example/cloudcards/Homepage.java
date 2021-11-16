@@ -67,26 +67,6 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
 
     }
 
-    public void startCollectionActivity(MenuItem menuItem) {
-        try {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-
-            StrictMode.setThreadPolicy(policy);
-            MTGAPI.setConnectTimeout(60);
-            MTGAPI.setReadTimeout(60);
-            MTGAPI.setWriteTimeout(60);
-            List<String> a = new ArrayList<>();
-            a.add("name:avacyn");
-            Card card = CardAPI.getCard(1);
-            Toast.makeText(this, card.getName(), Toast.LENGTH_LONG).show();
-
-        }catch (Exception e) {
-
-        }
-
-
-    }
-
     @Override
     public boolean onMenuItemClick(MenuItem menuItem) {
         return false;

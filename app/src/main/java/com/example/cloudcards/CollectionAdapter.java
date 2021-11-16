@@ -66,9 +66,6 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
                 });
         imageView.setContentDescription(card_names[position]);
 
-//        TextView textView = cardView.findViewById(R.id.card_name);
-//        textView.setText(card_names[position]);
-
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
