@@ -73,7 +73,7 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.homepage);
 
-        API = new APIHelper(this);
+        API = new APIHelper(getApplicationContext());
 
         // Getting image preview
         image_preview = findViewById(R.id.image_preview);
@@ -192,6 +192,7 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
 //                    MTGAPI.setReadTimeout(60);
 //                    MTGAPI.setWriteTimeout(60);
 //                    Card card = CardAPI.getCard(1);
+                    API.getCardByName(name);
                     Toast.makeText(this, name, Toast.LENGTH_LONG).show();
                 }
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE){
