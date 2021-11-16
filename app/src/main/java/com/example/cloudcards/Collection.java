@@ -93,8 +93,9 @@ public class Collection extends AppCompatActivity {
 
             adapter.setListener(new CollectionAdapter.Listener() {
                 @Override
-                public void onClick(String foodName) {
-                    Intent i = new Intent(Collection.this, Homepage.class);
+                public void onClick(String cardName) {
+                    Intent i = new Intent(Collection.this, CardDetail.class);
+                    i.putExtra("cardName", cardName);
                     startActivity(i);
                 }
             });

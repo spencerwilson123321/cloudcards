@@ -1,5 +1,7 @@
 package com.example.cloudcards;
 
+import java.util.Locale;
+
 public class Card {
     /**
      * TMP Array of Cards until the API works.
@@ -27,6 +29,18 @@ public class Card {
         this.card_text = card_text;
         this.power = power;
         this.toughness = toughness;
+    }
+
+    public static Card getCardByName(String cardName) {
+        Card card = null;
+        for(int i = 0; i < cards.length; i++) {
+            Card c = cards[i];
+            if(cardName.toLowerCase().trim().equals(c.getCard_name().toLowerCase().trim())) {
+                card = c;
+                break;
+            }
+        }
+        return card;
     }
     public String getCard_name() {
         return card_name;
