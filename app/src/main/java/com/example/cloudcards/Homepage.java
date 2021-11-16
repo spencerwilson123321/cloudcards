@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.ContextThemeWrapper;
 import android.view.MenuItem;
@@ -38,6 +39,9 @@ import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -192,7 +196,19 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
 //                    MTGAPI.setReadTimeout(60);
 //                    MTGAPI.setWriteTimeout(60);
 //                    Card card = CardAPI.getCard(1);
-                    API.getCardByName(name);
+
+                    API.getCardByName(name, new VolleyCallback() {
+                        @Override
+                        public void onSuccess(JSONObject result) {
+                            try {
+                                String test = result.getString("imageUrl");
+                                Log.i("imageURL",test);
+                            } catch (JSONException a) {
+
+                            }
+
+                        }
+                    });
                     Toast.makeText(this, name, Toast.LENGTH_LONG).show();
                 }
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE){
@@ -219,7 +235,7 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        //super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case 200:
                 if (grantResults.length > 0) {
