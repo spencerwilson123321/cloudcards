@@ -58,7 +58,6 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
                     public void onSuccess() {
 
                     }
-
                     @Override
                     public void onError(Exception e) {
                         Log.e("TAG", "onError:" + e.getMessage());
@@ -80,7 +79,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
 
     private Listener listener;
     interface Listener {
-        void onClick(String foodName);
+        void onClick(String cardName);
     }
 
     public void setListener(Listener listener) {
