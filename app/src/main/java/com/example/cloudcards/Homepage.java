@@ -182,13 +182,19 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
                 // set image to imageview
                 //image_preview.setImageURI(resultUri);
                 // get drawable bitmap for text recognition
+                Bitmap uriBit =  null;
+                try {
+                    uriBit = MediaStore.Images.Media.getBitmap(this.getContentResolver(), resultUri);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 BitmapDrawable bitmapDrawable = (BitmapDrawable) image_preview.getDrawable();
                 Bitmap bitmap = bitmapDrawable.getBitmap();
                 TextRecognizer recognizer = new TextRecognizer.Builder(getApplicationContext()).build();
                 if (!recognizer.isOperational()) {
                     Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
                 } else {
-                    Frame frame = new Frame.Builder().setBitmap(bitmap).build();
+                    Frame frame = new Frame.Builder().setBitmap(uriBit).build();
                     SparseArray<TextBlock> items = recognizer.detect(frame);
                     name = items.valueAt(0).getValue();
 //                    a.add("language: english");
@@ -204,7 +210,7 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
                                 String test = result.getString("imageUrl");
                                 Log.i("imageURL",test);
                                 fetchImage get = new fetchImage(test, cont, image_preview);
-                                get.start();
+                                get.run();
                             } catch (JSONException a) {
 
                             }

@@ -25,6 +25,7 @@ class fetchImage extends Thread {
         this.context = context;
         this.URL = URL;
         this.view = a;
+        this.mainHandler = new Handler();
 
     }
 
