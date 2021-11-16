@@ -158,13 +158,14 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
 
     }
 
-    public File createImageFile() throws IOException{
-        // Create an image file name
-        String name = ""+System.currentTimeMillis();
-        //File imagePath = new File(getApplicationContext().getFilesDir(), "temp");
-        File image = File.createTempFile(name, ".jpg", this.getExternalFilesDir(Environment.DIRECTORY_PICTURES) );
-        mCurrentPhotoPath = image.getAbsolutePath();
-        return image;
+    public File createImageFile(String name) {
+        File a = null;
+        try {
+            a = File.createTempFile(name, ".jpg", this.getExternalFilesDir(Environment.DIRECTORY_PICTURES) );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return a;
     }
 
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -209,10 +210,12 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
                             try {
                                 String test = result.getString("imageUrl");
                                 Log.i("imageURL",test);
+                                File a = createImageFile(result.getString("multiverseid"));
                                 fetchImage get = new fetchImage(test, cont, image_preview);
-                                get.run();
-                            } catch (JSONException a) {
-
+                                get.test(a.getAbsolutePath());
+                                //get.run();
+                            } catch (JSONException | IOException a) {
+                                a.printStackTrace();
                             }
 
                         }
