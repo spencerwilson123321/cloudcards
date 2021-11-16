@@ -63,7 +63,7 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
     private String mCurrentPhotoPath;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int SEARCH_ACTIVITY_REQUEST_CODE = 2;
-
+    private Context cont;
     ImageView image_preview;
     Uri image_uri;
     String cameraPermission[];
@@ -78,7 +78,7 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
         setContentView(R.layout.homepage);
 
         API = new APIHelper(getApplicationContext());
-
+        this.cont = this;
         // Getting image preview
         image_preview = findViewById(R.id.image_preview);
         // permissions
@@ -180,7 +180,7 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
             if (resultCode == RESULT_OK) {
                 Uri resultUri = result.getUri();
                 // set image to imageview
-                image_preview.setImageURI(resultUri);
+                //image_preview.setImageURI(resultUri);
                 // get drawable bitmap for text recognition
                 BitmapDrawable bitmapDrawable = (BitmapDrawable) image_preview.getDrawable();
                 Bitmap bitmap = bitmapDrawable.getBitmap();
@@ -203,6 +203,8 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
                             try {
                                 String test = result.getString("imageUrl");
                                 Log.i("imageURL",test);
+                                fetchImage get = new fetchImage(test, cont, image_preview);
+                                get.start();
                             } catch (JSONException a) {
 
                             }
