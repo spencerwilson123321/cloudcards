@@ -41,7 +41,7 @@ public class Register extends AppCompatActivity {
                     if (pass1.equals(pass2)) {
                         Boolean checkUser = db.checkEmail(emailText);
                         if (checkUser == false) {
-                            Boolean insert = db.insertData(emailText, pass1);
+                            Boolean insert = db.insertUser(emailText, pass1);
                             if (insert) {
                                 Toast.makeText(getApplicationContext(), "Registration Success", Toast.LENGTH_SHORT).show();
                             } else {
