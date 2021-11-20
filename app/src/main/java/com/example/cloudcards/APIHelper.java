@@ -15,8 +15,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
+import io.magicthegathering.javasdk.api.CardAPI;
+import io.magicthegathering.javasdk.resource.Card;
 
 public class APIHelper {
 
@@ -28,11 +35,12 @@ public class APIHelper {
         this.context = context;
     }
 
-    public void getCardByName(String name, VolleyCallback callback){
+    public void getCardByName(String name, final VolleyCallback callback) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
+        List<String> a = new ArrayList<>();
         JsonObjectRequest objectRequest = new JsonObjectRequest(
                 Request.Method.GET,
-                "https://api.magicthegathering.io/v1/cards?name="+name,
+                "https://api.magicthegathering.io/v1/cards?name=\""+name+"\"",
                 null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -59,4 +67,6 @@ public class APIHelper {
         );
         requestQueue.add(objectRequest);
     }
+
 }
+
