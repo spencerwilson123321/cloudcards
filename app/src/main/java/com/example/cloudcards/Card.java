@@ -42,6 +42,18 @@ public class Card {
         }
         return card;
     }
+    
+    public static Card getCardByName(String cardName, Card[] cardList) {
+        Card card = null;
+        for(int i = 0; i < cards.length; i++) {
+            Card c = cardList[i];
+            if(cardName.toLowerCase().trim().equals(c.getCard_name().toLowerCase().trim())) {
+                card = c;
+                break;
+            }
+        }
+        return card;
+    }
     public String getCard_name() {
         return card_name;
     }

@@ -81,8 +81,6 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.homepage);
         setContentView(R.layout.collection);
-        // Setup card collection
-        setCollectionAdapter();
 
         API = new APIHelper(getApplicationContext());
         this.cont = this;
@@ -125,6 +123,9 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
 
         });
 
+        // Setup card collection
+        collectionRecycler = findViewById(R.id.collection_recycler);
+        setCollectionAdapter();
     }
 
     private void pickCamera() {
@@ -217,17 +218,8 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
                     API.getCardByName(name, new VolleyCallback() {
                         @Override
                         public void onSuccess(JSONObject result) {
-                            try {
-                                String test = result.getString("imageUrl");
-                                Log.i("imageURL",test);
-                                File a = createImageFile(result.getString("multiverseid"));
-                                fetchImage get = new fetchImage(test, cont, image_preview);
-                                get.test(a.getAbsolutePath());
-                                //get.run();
-                            } catch (JSONException | IOException a) {
-                                a.printStackTrace();
-                            }
-
+                            // Display added card if confirmed.
+                            displayAddCardToCollectionPage(result);
                         }
                     });
                     Toast.makeText(this, name, Toast.LENGTH_LONG).show();
@@ -273,20 +265,34 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
 
 
     /* COLLECTION CODE COPIED START HERE */
+    RecyclerView collectionRecycler;
+    String[] cardNames = new String[0];
+    String[] images = new String[0];
+    com.example.cloudcards.Card[] test_cards = new com.example.cloudcards.Card[2];
+    CollectionAdapter adapter = new CollectionAdapter(cardNames, images);
     private void setCollectionAdapter() {
         try {
-            RecyclerView collectionRecycler = findViewById(R.id.collection_recycler);
-            com.example.cloudcards.Card[] test_cards = Card.getAllCards();
+//            RecyclerView collectionRecycler = findViewById(R.id.collection_recycler);
 
-            String[] cardNames = new String[test_cards.length];
-            String[] images = new String[test_cards.length];
+            /**
+             * Just testing initialization and adding add card with camera+API, remove when
+             * grabbing from database.
+              */
+            Card[] hardcode_cards = Card.getAllCards();
+            for(int i = 0; i < hardcode_cards.length; i++) {
+                test_cards[i] = hardcode_cards[i];
+                test_cards[i] = hardcode_cards[i];
+            }
+
+            cardNames = new String[test_cards.length];
+            images = new String[test_cards.length];
 
             for(int i = 0; i < test_cards.length; i++) {
                 cardNames[i] = test_cards[i].getCard_name();
                 images[i] = test_cards[i].getCard_img();
             }
 
-            CollectionAdapter adapter = new CollectionAdapter(cardNames, images);
+            adapter = new CollectionAdapter(cardNames, images);
             collectionRecycler.setAdapter(adapter);
 
             StaggeredGridLayoutManager lm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
@@ -303,6 +309,23 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
 
         }catch (Exception e) {
             System.out.println(e.getMessage());
+        }
+    }
+
+    private void displayAddCardToCollectionPage(JSONObject result) {
+        try {
+            String test = result.getString("imageUrl");
+            Log.i("imageURL",test);
+            File a = createImageFile(result.getString("multiverseid"));
+            fetchImage get = new fetchImage(test, cont, image_preview);
+            get.test(a.getAbsolutePath());
+
+//            int insertIndex = 0;
+//            data.add(insertIndex, item);
+//            adapter.notifyItemInserted(insertIndex);
+
+        } catch (JSONException | IOException a) {
+            a.printStackTrace();
         }
     }
     /* END COLLECTION CODE */
