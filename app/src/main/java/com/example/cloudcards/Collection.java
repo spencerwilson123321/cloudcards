@@ -27,16 +27,20 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
 
 public class Collection extends AppCompatActivity {
     private Button showMenu;
-    private DBHelper db;
+    private DBHelper DB;
     private APIHelper API;
+    int userID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         API = new APIHelper(getApplicationContext());
+        DB = new DBHelper(getApplicationContext());
+        userID = getIntent().getIntExtra("userID", 0);
         setContentView(R.layout.collection);
         setShowMenu();
         setCollectionAdapter();
@@ -75,7 +79,10 @@ public class Collection extends AppCompatActivity {
     private void setCollectionAdapter() {
         try {
             RecyclerView collectionRecycler = findViewById(R.id.collection_recycler);
-            Card[] test_cards = Card.getAllCards();
+
+            ArrayList<Card> cards = DB.getCardsByUserID(userID);
+            Card[] test_cards = new Card[cards.size()];
+            test_cards = cards.toArray(test_cards);
 
             String[] cardNames = new String[test_cards.length];
             String[] images = new String[test_cards.length];
@@ -85,7 +92,9 @@ public class Collection extends AppCompatActivity {
                 images[i] = test_cards[i].getCard_img();
             }
 
-            CollectionAdapter adapter = new CollectionAdapter(cardNames, images);
+
+
+            CollectionAdapter adapter = new CollectionAdapter(cardNames, images, cards);
             collectionRecycler.setAdapter(adapter);
 
             StaggeredGridLayoutManager lm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
@@ -93,15 +102,18 @@ public class Collection extends AppCompatActivity {
 
             adapter.setListener(new CollectionAdapter.Listener() {
                 @Override
-                public void onClick(String cardName) {
+                public void onClick(Card cardName) {
                     Intent i = new Intent(Collection.this, CardDetail.class);
                     i.putExtra("cardName", cardName);
                     startActivity(i);
                 }
             });
 
+
+
         }catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
+
 }

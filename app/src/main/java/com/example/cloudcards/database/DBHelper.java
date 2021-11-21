@@ -24,14 +24,15 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create Table users (id INTEGER primary key AUTOINCREMENT, email TEXT, password TEXT)");
-        db.execSQL("create Table cards (userID INTEGER primary key, " +
+        db.execSQL("create Table cards (userID INTEGER, " +
                 "id INTEGER, " +
                 "card_name TEXT, " +
                 "card_img TEXT, " +
                 "card_mana TEXT, " +
                 "card_text TEXT, " +
                 "power INTEGER, " +
-                "toughness INTEGER)");
+                "toughness INTEGER, " +
+                "primary key (userID, id))");
     }
 
     @Override

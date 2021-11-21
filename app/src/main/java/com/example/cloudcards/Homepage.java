@@ -83,7 +83,7 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.homepage);
         // Setup card collection
-        setCollectionAdapter();
+//        setCollectionAdapter();
         userID = getIntent().getIntExtra("userID", 0);
         API = new APIHelper(getApplicationContext());
         DB = new DBHelper(getApplicationContext());
@@ -112,6 +112,7 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
                             break;
                             case "View Collection":
                                 Intent intent = new Intent(getApplicationContext(), Collection.class);
+                                intent.putExtra("userID", userID);
                                 startActivity(intent);
                                 // return true;
                             break;
@@ -279,37 +280,37 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
 
 
     /* COLLECTION CODE COPIED START HERE */
-    private void setCollectionAdapter() {
-        try {
-            RecyclerView collectionRecycler = findViewById(R.id.collection_recycler);
-            com.example.cloudcards.Card[] test_cards = Card.getAllCards();
-
-            String[] cardNames = new String[test_cards.length];
-            String[] images = new String[test_cards.length];
-
-            for(int i = 0; i < test_cards.length; i++) {
-                cardNames[i] = test_cards[i].getCard_name();
-                images[i] = test_cards[i].getCard_img();
-            }
-
-            CollectionAdapter adapter = new CollectionAdapter(cardNames, images);
-            collectionRecycler.setAdapter(adapter);
-
-            StaggeredGridLayoutManager lm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-            collectionRecycler.setLayoutManager(lm);
-
-            adapter.setListener(new CollectionAdapter.Listener() {
-                @Override
-                public void onClick(String cardName) {
-                    Intent i = new Intent(Homepage.this, CardDetail.class);
-                    i.putExtra("cardName", cardName);
-                    startActivity(i);
-                }
-            });
-
-        }catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
+//    private void setCollectionAdapter() {
+//        try {
+//            RecyclerView collectionRecycler = findViewById(R.id.collection_recycler);
+//            com.example.cloudcards.Card[] test_cards = Card.getAllCards();
+//
+//            String[] cardNames = new String[test_cards.length];
+//            String[] images = new String[test_cards.length];
+//
+//            for(int i = 0; i < test_cards.length; i++) {
+//                cardNames[i] = test_cards[i].getCard_name();
+//                images[i] = test_cards[i].getCard_img();
+//            }
+//
+//            CollectionAdapter adapter = new CollectionAdapter(cardNames, images);
+//            collectionRecycler.setAdapter(adapter);
+//
+//            StaggeredGridLayoutManager lm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+//            collectionRecycler.setLayoutManager(lm);
+//
+//            adapter.setListener(new CollectionAdapter.Listener() {
+//                @Override
+//                public void onClick(String cardName) {
+//                    Intent i = new Intent(Homepage.this, CardDetail.class);
+//                    i.putExtra("cardName", cardName);
+//                    startActivity(i);
+//                }
+//            });
+//
+//        }catch (Exception e) {
+//            System.out.println(e.getMessage());
+//        }
+//    }
     /* END COLLECTION CODE */
 }

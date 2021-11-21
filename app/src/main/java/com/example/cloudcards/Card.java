@@ -1,8 +1,11 @@
 package com.example.cloudcards;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Locale;
 
-public class Card {
+public class Card implements Parcelable {
     /**
      * TMP Array of Cards until the API works.
      * I just wanted the ability to test out the gallary layout.
@@ -117,5 +120,45 @@ public class Card {
 
     public Card() {
 
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(card_name);
+        parcel.writeString(card_mana);
+        parcel.writeString(card_text);
+        parcel.writeString(card_img);
+        parcel.writeString(type);
+        parcel.writeInt(power);
+        parcel.writeInt(toughness);
+        parcel.writeInt(card_number);
+    }
+
+    // this is used to regenerate your object. All Parcelables must have a CREATOR that implements these two methods
+    public static final Parcelable.Creator<Card> CREATOR = new Parcelable.Creator<Card>() {
+        public Card createFromParcel(Parcel in) {
+            return new Card(in);
+        }
+
+        public Card[] newArray(int size) {
+            return new Card[size];
+        }
+    };
+
+    // example constructor that takes a Parcel and gives you an object populated with it's values
+    private Card (Parcel in) {
+        card_name = in.readString();
+        card_mana = in.readString();
+        card_text = in.readString();
+        card_img = in.readString();
+        type = in.readString();
+        power = in.readInt();
+        toughness = in.readInt();
+        card_number = in.readInt();
     }
 }

@@ -18,9 +18,9 @@ public class CardDetail extends AppCompatActivity {
     }
 
     private void displayCard() {
-        String cardName = (String) getIntent().getExtras().get("cardName");
+        Card card = (Card) getIntent().getExtras().get("cardName");
 
-        Card card = Card.getCardByName(cardName);
+//        Card card = Card.getCardByName(cardName);
 
         if(card != null) {
             TextView card_Name = findViewById(R.id.card_name);
