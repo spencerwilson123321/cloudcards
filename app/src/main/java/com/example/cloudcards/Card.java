@@ -176,6 +176,7 @@ public class Card implements Parcelable {
         parcel.writeInt(power);
         parcel.writeInt(toughness);
         parcel.writeInt(card_number);
+        parcel.writeString(card_colour_identity);
     }
 
     // this is used to regenerate your object. All Parcelables must have a CREATOR that implements these two methods
@@ -199,5 +200,6 @@ public class Card implements Parcelable {
         power = in.readInt();
         toughness = in.readInt();
         card_number = in.readInt();
+        card_colour_identity = in.readString();
     }
 }
