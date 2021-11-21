@@ -220,8 +220,8 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
                             if (card == null){
                                 Toast.makeText(getApplicationContext(), "We were unable to identify your card. Please try again.", Toast.LENGTH_LONG).show();
                             } else{
-                                //dialogueAddCard(card);
-                                dbAddCard(card);
+                                dialogueAddCard(card);
+                                //dbAddCard(card);
 
                             }
 
@@ -272,23 +272,26 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
 
     private void dialogueAddCard(Card card){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Do you want to add this card to your collection? "+card.getCard_name())
-                .setCancelable(false)
+        builder.setMessage("Do you want to add this card to your collection?"
+                +"\n"+card.getCard_name()
+                + "\n" + card.getType()
+                + "\n" + card.getCard_mana());
+        builder
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dbAddCard(card);
                     }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                });
+         builder       .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        finish();
+                        dialogInterface.cancel();
 
                     }
                 });
-        AlertDialog a = builder.create();
-        a.show();
+         builder.setTitle("Confirm Card");
+        builder.show();
     }
 
     private void dbAddCard(Card card){
