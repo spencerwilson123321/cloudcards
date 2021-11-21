@@ -9,7 +9,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-// import com.google.gson.JsonArray;
+import com.google.gson.JsonArray;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,7 +29,7 @@ public class APIHelper {
 
     HttpURLConnection connection;
     Context context;
-    // private Card newCard;
+    private Card newCard;
 
     public APIHelper(Context context){
         this.context = context;
@@ -68,5 +68,5 @@ public class APIHelper {
         requestQueue.add(objectRequest);
     }
 
-
 }
+
