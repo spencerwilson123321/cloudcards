@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -215,11 +216,13 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
                     API.getCardByName(name, new VolleyCallback() {
                         @Override
                         public void onSuccess(JSONObject result) {
-                            Card card = makeCardFromResult(result);
+                            Card card = new Card(result);
                             if (card == null){
                                 Toast.makeText(getApplicationContext(), "We were unable to identify your card. Please try again.", Toast.LENGTH_LONG).show();
                             } else{
-                                dialogueAddCard(card);
+                                //dialogueAddCard(card);
+                                dbAddCard(card);
+
                             }
 
                         }
@@ -265,23 +268,11 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
         }
     }
 
-    private Card makeCardFromResult(JSONObject result) {
-        Card card;
-        try {
 
-            card = new Card(result.getInt("multiverseid"), result.getString("name"), result.getString("imageUrl")
-                    ,result.getString("manaCost"), result.getString("flavor"), result.getInt("power"),
-                    result.getInt("toughness"), result.getString("type"));
-            return card;
-        } catch (JSONException a) {
-            a.printStackTrace();
-            return null;
-        }
-    }
 
     private void dialogueAddCard(Card card){
-        AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
-        builder.setMessage("Do you want to add this card to your collection?\n"+card.getCard_name()+"\n"+card.getCard_mana()+"\n"+card.getType())
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Do you want to add this card to your collection? "+card.getCard_name())
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
@@ -296,10 +287,12 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
 
                     }
                 });
+        AlertDialog a = builder.create();
+        a.show();
     }
 
     private void dbAddCard(Card card){
-        DB.insertCard(userID, card.getCard_id(), card.getCard_img(), card.getCard_name(), card.getCard_mana(), card.getCard_text(), card.getPower(), card.getToughness(), card.getType());
+        DB.insertCard(userID, card);
         ArrayList<Card> cards = DB.getCardsByUserID(userID);
         Log.i("cards", cards.toString());
     }

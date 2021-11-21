@@ -1,5 +1,8 @@
 package com.example.cloudcards;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Locale;
 
 public class Card {
@@ -32,7 +35,7 @@ public class Card {
     }
 
     public Card(int id, String card_name, String card_img, String card_mana, String card_text,
-                int power, int toughness, String type){
+                int power, int toughness, String type, String identity){
         this.card_number = id;
         this.card_name = card_name;
         this.card_img = card_img;
@@ -41,6 +44,25 @@ public class Card {
         this.power = power;
         this.toughness = toughness;
         this.type = type;
+        this.card_colour_identity = identity;
+
+    }
+
+    public Card(JSONObject result){
+        try {
+            this.card_number= result.getInt("multiverseid");
+            this.card_img = result.getString("imageUrl");
+            this.card_name = result.getString("name");
+            this.card_mana= result.getString("manaCost");
+            this.card_text = result.getString("text");
+            this.power = result.getInt("power");
+            this.toughness = result.getInt("toughness");
+            this.type = result.getString("type");
+            this.card_colour_identity = result.getString("colorIdentity");
+
+        } catch (JSONException a) {
+            a.printStackTrace();
+        }
     }
 
     public static Card getCardByName(String cardName) {
@@ -121,6 +143,8 @@ public class Card {
         return this.type;
     }
 
+    public String getCard_colour_identity() { return this.card_colour_identity;}
+
     private String card_name;
     private String card_mana;
     private String card_text;
@@ -129,6 +153,7 @@ public class Card {
     private int power;
     private int toughness;
     private int card_number;
+    private String card_colour_identity;
 
     public Card() {
 
