@@ -31,6 +31,18 @@ public class Card {
         this.toughness = toughness;
     }
 
+    public Card(int id, String card_name, String card_img, String card_mana, String card_text,
+                int power, int toughness, String type){
+        this.card_number = id;
+        this.card_name = card_name;
+        this.card_img = card_img;
+        this.card_mana = card_mana;
+        this.card_text = card_text;
+        this.power = power;
+        this.toughness = toughness;
+        this.type = type;
+    }
+
     public static Card getCardByName(String cardName) {
         Card card = null;
         for(int i = 0; i < cards.length; i++) {
@@ -78,6 +90,9 @@ public class Card {
         return card_number;
     }
 
+    public int getCard_id(){
+        return card_number;
+    }
     public int getPower() {
         return power;
     }
