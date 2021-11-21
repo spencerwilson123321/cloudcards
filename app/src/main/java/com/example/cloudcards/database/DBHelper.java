@@ -32,6 +32,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 "card_text TEXT, " +
                 "power INTEGER, " +
                 "toughness INTEGER, " +
+                "type TEXT, "+
+                "identity TEXT, "+
                 "primary key (userID, id))");
     }
 
@@ -41,17 +43,19 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("drop Table if exists cards");
     }
 
-    public Boolean insertCard(int userID, int id, String card_img, String card_name, String card_mana, String card_text, int power, int toughness) {
+    public Boolean insertCard(int userID, Card card) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("userID", userID);
-        contentValues.put("id", id);
-        contentValues.put("card_img", card_img);
-        contentValues.put("card_name", card_name);
-        contentValues.put("card_mana", card_mana);
-        contentValues.put("card_text", card_text);
-        contentValues.put("power", power);
-        contentValues.put("toughness", toughness);
+        contentValues.put("id", card.getCard_id());
+        contentValues.put("card_img", card.getCard_img());
+        contentValues.put("card_name", card.getCard_name());
+        contentValues.put("card_mana", card.getCard_mana());
+        contentValues.put("card_text", card.getCard_text());
+        contentValues.put("power", card.getPower());
+        contentValues.put("toughness", card.getToughness());
+        contentValues.put("type", card.getType());
+        contentValues.put("identity", card.getCard_colour_identity());
         long result = db.insert("cards", null, contentValues);
         if (result == -1) {
             return false;
@@ -73,7 +77,9 @@ public class DBHelper extends SQLiteOpenHelper {
                         cursor.getString(4),
                         cursor.getString(5),
                         Integer.parseInt(cursor.getString(6)),
-                        Integer.parseInt(cursor.getString(7)))
+                        Integer.parseInt(cursor.getString(7)),
+                                cursor.getString(8),
+                                cursor.getString(9))
                 );
             } while (cursor.moveToNext());
         }

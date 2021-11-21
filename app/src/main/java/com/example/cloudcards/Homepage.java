@@ -2,6 +2,7 @@ package com.example.cloudcards;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -11,8 +12,10 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -217,25 +220,13 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
                     API.getCardByName(name, new VolleyCallback() {
                         @Override
                         public void onSuccess(JSONObject result) {
-                            try {
-                                String test = result.getString("imageUrl");
-                                Log.i("imageURL",test);
-                                int multiverse_id = Integer.parseInt(result.getString("multiverseid"));
-                                String card_img = result.getString("imageUrl");
-                                String card_name = result.getString("name");
-                                String card_mana = result.getString("manaCost");
-                                String card_text = result.getString("flavor");
-                                int power = Integer.parseInt(result.getString("power"));
-                                int toughness = Integer.parseInt(result.getString("toughness"));
-                                DB.insertCard(userID, multiverse_id, card_img, card_name, card_mana, card_text, power, toughness);
-                                ArrayList<Card> cards = DB.getCardsByUserID(userID);
-                                Log.i("cards", cards.toString());
-                                File a = createImageFile(result.getString("multiverseid"));
-                                fetchImage get = new fetchImage(test, cont, image_preview);
-                                get.test(a.getAbsolutePath());
-                                //get.run();
-                            } catch (JSONException | IOException a) {
-                                a.printStackTrace();
+                            Card card = new Card(result);
+                            if (card == null){
+                                Toast.makeText(getApplicationContext(), "We were unable to identify your card. Please try again.", Toast.LENGTH_LONG).show();
+                            } else{
+                                dialogueAddCard(card);
+                                //dbAddCard(card);
+
                             }
 
                         }
@@ -281,6 +272,37 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
         }
     }
 
+
+
+    private void dialogueAddCard(Card card){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Do you want to add this card to your collection?"
+                +"\n"+card.getCard_name()
+                + "\n" + card.getType()
+                + "\n" + card.getCard_mana());
+        builder
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dbAddCard(card);
+                    }
+                });
+         builder       .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+
+                    }
+                });
+         builder.setTitle("Confirm Card");
+        builder.show();
+    }
+
+    private void dbAddCard(Card card){
+        DB.insertCard(userID, card);
+        ArrayList<Card> cards = DB.getCardsByUserID(userID);
+        Log.i("cards", cards.toString());
+    }
 
     /* COLLECTION CODE COPIED START HERE */
 //    private void setCollectionAdapter() {
