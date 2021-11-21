@@ -38,6 +38,7 @@ import android.widget.PopupMenu;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.cloudcards.database.DBHelper;
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
@@ -73,18 +74,19 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
     String cameraPermission[];
     String storagePermission[];
     String name;
-
+    int userID;
     private APIHelper API;
+    private DBHelper DB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.homepage);
-        setContentView(R.layout.collection);
+        setContentView(R.layout.homepage);
         // Setup card collection
         setCollectionAdapter();
-
+        userID = getIntent().getIntExtra("userID", 0);
         API = new APIHelper(getApplicationContext());
+        DB = new DBHelper(getApplicationContext());
         this.cont = this;
         // Getting image preview
 //        image_preview = findViewById(R.id.image_preview);
@@ -106,7 +108,7 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         Toast.makeText(getApplicationContext(), "You have clicked" + menuItem.getTitle(), Toast.LENGTH_LONG).show();
                         switch (menuItem.getTitle().toString()) {
-                            case "Add Card": takePhoto(menuItem);
+                            case "Add Card": takePhoto();
                             break;
                             case "View Collection":
                                 Intent intent = new Intent(getApplicationContext(), Collection.class);
@@ -139,7 +141,7 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
         this.startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE);
     }
 
-    public void takePhoto(MenuItem menuItem) {
+    public void takePhoto() {
         if(!checkCameraPermissions()){
             requestCameraPermission();
         } else {
@@ -208,18 +210,22 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
                     Frame frame = new Frame.Builder().setBitmap(uriBit).build();
                     SparseArray<TextBlock> items = recognizer.detect(frame);
                     name = items.valueAt(0).getValue();
-//                    a.add("language: english");
-//                    MTGAPI.setConnectTimeout(60);
-//                    MTGAPI.setReadTimeout(60);
-//                    MTGAPI.setWriteTimeout(60);
-//                    Card card = CardAPI.getCard(1);
-
                     API.getCardByName(name, new VolleyCallback() {
                         @Override
                         public void onSuccess(JSONObject result) {
                             try {
                                 String test = result.getString("imageUrl");
                                 Log.i("imageURL",test);
+                                int multiverse_id = Integer.parseInt(result.getString("multiverseid"));
+                                String card_img = result.getString("imageUrl");
+                                String card_name = result.getString("name");
+                                String card_mana = result.getString("manaCost");
+                                String card_text = result.getString("flavor");
+                                int power = Integer.parseInt(result.getString("power"));
+                                int toughness = Integer.parseInt(result.getString("toughness"));
+                                DB.insertCard(userID, multiverse_id, card_img, card_name, card_mana, card_text, power, toughness);
+                                ArrayList<Card> cards = DB.getCardsByUserID(userID);
+                                Log.i("cards", cards.toString());
                                 File a = createImageFile(result.getString("multiverseid"));
                                 fetchImage get = new fetchImage(test, cont, image_preview);
                                 get.test(a.getAbsolutePath());
