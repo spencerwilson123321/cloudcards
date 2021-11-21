@@ -116,7 +116,10 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
                                 startActivity(intent);
                                 // return true;
                             break;
-                            case "Search Card":startSearchActivity(menuItem);
+                            case "Search Card":
+                                Intent search_intent = new Intent(getApplicationContext(), CollectionSearch.class);
+                                search_intent.putExtra("userID", userID);
+                                startActivity(search_intent);
                             break;
                         }
                         return true;
