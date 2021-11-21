@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 
 import android.Manifest;
@@ -56,7 +58,6 @@ import java.util.List;
 
 import io.magicthegathering.javasdk.api.CardAPI;
 import io.magicthegathering.javasdk.api.MTGAPI;
-import io.magicthegathering.javasdk.resource.Card;
 
 
 public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemClickListener {
@@ -78,12 +79,15 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.homepage);
+//        setContentView(R.layout.homepage);
+        setContentView(R.layout.collection);
+        // Setup card collection
+        setCollectionAdapter();
 
         API = new APIHelper(getApplicationContext());
         this.cont = this;
         // Getting image preview
-        image_preview = findViewById(R.id.image_preview);
+//        image_preview = findViewById(R.id.image_preview);
         // permissions
         cameraPermission = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
         storagePermission = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -195,8 +199,8 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                BitmapDrawable bitmapDrawable = (BitmapDrawable) image_preview.getDrawable();
-                Bitmap bitmap = bitmapDrawable.getBitmap();
+//                BitmapDrawable bitmapDrawable = (BitmapDrawable) image_preview.getDrawable();
+//                Bitmap bitmap = bitmapDrawable.getBitmap();
                 TextRecognizer recognizer = new TextRecognizer.Builder(getApplicationContext()).build();
                 if (!recognizer.isOperational()) {
                     Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
@@ -267,4 +271,39 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
         }
     }
 
+
+    /* COLLECTION CODE COPIED START HERE */
+    private void setCollectionAdapter() {
+        try {
+            RecyclerView collectionRecycler = findViewById(R.id.collection_recycler);
+            com.example.cloudcards.Card[] test_cards = Card.getAllCards();
+
+            String[] cardNames = new String[test_cards.length];
+            String[] images = new String[test_cards.length];
+
+            for(int i = 0; i < test_cards.length; i++) {
+                cardNames[i] = test_cards[i].getCard_name();
+                images[i] = test_cards[i].getCard_img();
+            }
+
+            CollectionAdapter adapter = new CollectionAdapter(cardNames, images);
+            collectionRecycler.setAdapter(adapter);
+
+            StaggeredGridLayoutManager lm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+            collectionRecycler.setLayoutManager(lm);
+
+            adapter.setListener(new CollectionAdapter.Listener() {
+                @Override
+                public void onClick(String cardName) {
+                    Intent i = new Intent(Homepage.this, CardDetail.class);
+                    i.putExtra("cardName", cardName);
+                    startActivity(i);
+                }
+            });
+
+        }catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    /* END COLLECTION CODE */
 }
