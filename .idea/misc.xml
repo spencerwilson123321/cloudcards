@@ -14,12 +14,12 @@
         <entry key="..\:/Users/spenc/Documents/cloudcards/app/src/main/res/layout/login.xml" value="0.264" />
         <entry key="..\:/Users/spenc/Documents/cloudcards/app/src/main/res/layout/register.xml" value="0.23052536231884058" />
         <entry key="..\:/Users/spenc/Documents/cloudcards/app/src/main/res/menu/drop_down_menu.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_collection.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/card_detail.xml" value="0.2994791666666667" />
-        <entry key="app/src/main/res/layout/card_image.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/collection.xml" value="0.5203125" />
-        <entry key="app/src/main/res/layout/homepage.xml" value="0.1" />
-        <entry key="app/src/main/res/menu/drop_down_menu.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_collection_search.xml" value="0.1625" />
+        <entry key="app/src/main/res/layout/card_image.xml" value="0.14990942028985507" />
+        <entry key="app/src/main/res/layout/collection.xml" value="0.14990942028985507" />
+        <entry key="app/src/main/res/layout/homepage.xml" value="0.14990942028985507" />
+        <entry key="app/src/main/res/layout/login.xml" value="0.14990942028985507" />
+        <entry key="app/src/main/res/layout/register.xml" value="0.14990942028985507" />
       </map>
     </option>
   </component>

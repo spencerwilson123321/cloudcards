@@ -6,45 +6,80 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.example.cloudcards.database.DBHelper;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.concurrent.CompletableFuture;
 
-public class Collection extends AppCompatActivity {
+public class CollectionSearch extends AppCompatActivity {
+
     private Button showMenu;
     private DBHelper DB;
-    private APIHelper API;
     int userID;
+    EditText search_bar;
+    Button search_button;
+    RecyclerView collectionRecycler;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        API = new APIHelper(getApplicationContext());
+        setContentView(R.layout.activity_collection_search);
+
         DB = new DBHelper(getApplicationContext());
         userID = getIntent().getIntExtra("userID", 0);
-        setContentView(R.layout.collection);
+
+        search_bar = (EditText) findViewById(R.id.search_bar);
+        search_button = (Button) findViewById(R.id.search_button);
+        collectionRecycler = findViewById(R.id.collection_recycler);
+
+        search_button.setOnClickListener(view -> {
+            String search = search_bar.getText().toString();
+            if (search.equals("")) {
+                Toast.makeText(getApplicationContext(), "Empty search field, please type something.", Toast.LENGTH_SHORT).show();
+            } else {
+                ArrayList<Card> cardList = searchCardsByName(userID, search);
+                if (cardList.size() == 0) {
+                    Toast.makeText(getApplicationContext(), "No Matching Cards Found", Toast.LENGTH_LONG).show();
+                } else {
+                    setCollectionAdapter(cardList);
+                }
+            }
+        });
+
         setShowMenu();
-        setCollectionAdapter();
     }
+
+    public ArrayList<Card> searchCardsByName(int userID, String search_val){
+        ArrayList<Card> cards = new ArrayList<>();
+        SQLiteDatabase db = DB.getWritableDatabase();
+        Cursor cursor = db.rawQuery("Select * from cards where userID = ? " +
+                "and card_name LIKE '%"+search_val+"%' ", new String[] {String.valueOf(userID)});
+        if(cursor.moveToFirst()) {
+            do {
+                cards.add(
+                        new Card(Integer.parseInt(cursor.getString(1)),
+                                cursor.getString(2),
+                                cursor.getString(3),
+                                cursor.getString(4),
+                                cursor.getString(5),
+                                Integer.parseInt(cursor.getString(6)),
+                                Integer.parseInt(cursor.getString(7)))
+                );
+            } while (cursor.moveToNext());
+        }
+        return cards;
+    };
 
     private void setShowMenu() {
         showMenu = (Button) findViewById(R.id.show_dropdown_menu);
@@ -76,11 +111,8 @@ public class Collection extends AppCompatActivity {
         });
     }
 
-    private void setCollectionAdapter() {
+    private void setCollectionAdapter(ArrayList<Card> cards) {
         try {
-            RecyclerView collectionRecycler = findViewById(R.id.collection_recycler);
-
-            ArrayList<Card> cards = DB.getCardsByUserID(userID);
             Card[] test_cards = new Card[cards.size()];
             test_cards = cards.toArray(test_cards);
 
@@ -92,8 +124,6 @@ public class Collection extends AppCompatActivity {
                 images[i] = test_cards[i].getCard_img();
             }
 
-
-
             CollectionAdapter adapter = new CollectionAdapter(cardNames, images, cards);
             collectionRecycler.setAdapter(adapter);
 
@@ -103,7 +133,7 @@ public class Collection extends AppCompatActivity {
             adapter.setListener(new CollectionAdapter.Listener() {
                 @Override
                 public void onClick(Card cardName) {
-                    Intent i = new Intent(Collection.this, CardDetail.class);
+                    Intent i = new Intent(CollectionSearch.this, CardDetail.class);
                     i.putExtra("cardName", cardName);
                     startActivity(i);
                 }
@@ -115,5 +145,4 @@ public class Collection extends AppCompatActivity {
             System.out.println(e.getMessage());
         }
     }
-
 }

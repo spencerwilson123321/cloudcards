@@ -21,7 +21,7 @@ public class Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
-
+//        getApplicationContext().deleteDatabase("cloudcards.db");
         email = (EditText) findViewById(R.id.login_email);
         password = (EditText) findViewById(R.id.login_password);
         sign_in = (Button) findViewById(R.id.login_button);
@@ -38,7 +38,9 @@ public class Login extends AppCompatActivity {
                     Boolean checkEmailPassword = db.checkEmailPassword(emailText, pass);
                     if (checkEmailPassword == true) {
                         Toast.makeText(getApplicationContext(), "Sign in success", Toast.LENGTH_SHORT).show();
+                        int userID = db.getUserID(emailText, pass);
                         Intent intent = new Intent(getApplicationContext(), Homepage.class);
+                        intent.putExtra("userID", userID);
                         startActivity(intent);
                     } else {
                         Toast.makeText(getApplicationContext(), "Invalid Email and Password", Toast.LENGTH_SHORT).show();

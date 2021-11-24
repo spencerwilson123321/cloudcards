@@ -1,5 +1,6 @@
 package com.example.cloudcards;
 
+import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,9 +16,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+
 public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.ViewHolder> {
     private String[] card_names;
     private String[] imageIds;
+    private ArrayList<Card> cardList;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private CardView cardView;
@@ -28,9 +32,10 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
         }
     }
 
-    public CollectionAdapter(String[] card_names, String[] imageIds) {
+    public CollectionAdapter(String[] card_names, String[] imageIds, ArrayList<Card> cardList) {
         this.card_names = card_names;
         this.imageIds = imageIds;
+        this.cardList = cardList;
     }
 
     @Override
@@ -46,7 +51,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
+    public void onBindViewHolder(ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
         final CardView cardView = holder.cardView;
 
         ImageView imageView = cardView.findViewById(R.id.card_image);
@@ -69,7 +74,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
             @Override
             public void onClick(View view) {
                 if (listener != null) {
-                    listener.onClick(card_names[position]);
+                    listener.onClick(cardList.get(position));
                 }
             }
         });
@@ -79,10 +84,11 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
 
     private Listener listener;
     interface Listener {
-        void onClick(String cardName);
+        void onClick(Card cardName);
     }
 
     public void setListener(Listener listener) {
         this.listener = listener;
     }
+
 }

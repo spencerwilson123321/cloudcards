@@ -2,6 +2,7 @@ package com.example.cloudcards;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -9,8 +10,10 @@ import androidx.core.content.FileProvider;
 
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -34,6 +37,7 @@ import android.widget.PopupMenu;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.cloudcards.database.DBHelper;
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
@@ -69,15 +73,19 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
     String cameraPermission[];
     String storagePermission[];
     String name;
-
+    int userID;
     private APIHelper API;
+    private DBHelper DB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.homepage);
-
+        // Setup card collection
+//        setCollectionAdapter();
+        userID = getIntent().getIntExtra("userID", 0);
         API = new APIHelper(getApplicationContext());
+        DB = new DBHelper(getApplicationContext());
         this.cont = this;
         // Getting image preview
         image_preview = findViewById(R.id.image_preview);
@@ -99,13 +107,17 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         Toast.makeText(getApplicationContext(), "You have clicked" + menuItem.getTitle(), Toast.LENGTH_LONG).show();
                         switch (menuItem.getTitle().toString()) {
-                            case "Add Card": takePhoto(menuItem);
+                            case "Add Card": takePhoto();
                             break;
                             case "View Collection":
                                 Intent intent = new Intent(getApplicationContext(), Collection.class);
+                                intent.putExtra("userID", userID);
                                 startActivity(intent);
                             break;
-                            case "Search Card":startSearchActivity(menuItem);
+                            case "Search Card":
+                                Intent search_intent = new Intent(getApplicationContext(), CollectionSearch.class);
+                                search_intent.putExtra("userID", userID);
+                                startActivity(search_intent);
                             break;
                         }
                         return true;
@@ -131,7 +143,7 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
         this.startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE);
     }
 
-    public void takePhoto(MenuItem menuItem) {
+    public void takePhoto() {
         if(!checkCameraPermissions()){
             requestCameraPermission();
         } else {
@@ -200,24 +212,16 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
                     Frame frame = new Frame.Builder().setBitmap(uriBit).build();
                     SparseArray<TextBlock> items = recognizer.detect(frame);
                     name = items.valueAt(0).getValue();
-//                    a.add("language: english");
-//                    MTGAPI.setConnectTimeout(60);
-//                    MTGAPI.setReadTimeout(60);
-//                    MTGAPI.setWriteTimeout(60);
-//                    Card card = CardAPI.getCard(1);
-
                     API.getCardByName(name, new VolleyCallback() {
                         @Override
                         public void onSuccess(JSONObject result) {
-                            try {
-                                String test = result.getString("imageUrl");
-                                Log.i("imageURL",test);
-                                File a = createImageFile(result.getString("multiverseid"));
-                                fetchImage get = new fetchImage(test, cont, image_preview);
-                                get.test(a.getAbsolutePath());
-                                //get.run();
-                            } catch (JSONException | IOException a) {
-                                a.printStackTrace();
+                            Card card = new Card(result);
+                            if (card == null){
+                                Toast.makeText(getApplicationContext(), "We were unable to identify your card. Please try again.", Toast.LENGTH_LONG).show();
+                            } else{
+                                dialogueAddCard(card);
+                                //dbAddCard(card);
+
                             }
 
                         }
@@ -262,5 +266,73 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
                 }
         }
     }
+
+
+
+
+    private void dialogueAddCard(Card card){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Do you want to add this card to your collection?"
+                +"\n"+card.getCard_name()
+                + "\n" + card.getType()
+                + "\n" + card.getCard_mana());
+        builder
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dbAddCard(card);
+                    }
+                });
+         builder       .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+
+                    }
+                });
+         builder.setTitle("Confirm Card");
+        builder.show();
+    }
+
+    private void dbAddCard(Card card){
+        DB.insertCard(userID, card);
+        ArrayList<Card> cards = DB.getCardsByUserID(userID);
+        Log.i("cards", cards.toString());
+    }
+
+    /* COLLECTION CODE COPIED START HERE */
+//    private void setCollectionAdapter() {
+//        try {
+//            RecyclerView collectionRecycler = findViewById(R.id.collection_recycler);
+//            com.example.cloudcards.Card[] test_cards = Card.getAllCards();
+//
+//            String[] cardNames = new String[test_cards.length];
+//            String[] images = new String[test_cards.length];
+//
+//            for(int i = 0; i < test_cards.length; i++) {
+//                cardNames[i] = test_cards[i].getCard_name();
+//                images[i] = test_cards[i].getCard_img();
+//            }
+//
+//            CollectionAdapter adapter = new CollectionAdapter(cardNames, images);
+//            collectionRecycler.setAdapter(adapter);
+//
+//            StaggeredGridLayoutManager lm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+//            collectionRecycler.setLayoutManager(lm);
+//
+//            adapter.setListener(new CollectionAdapter.Listener() {
+//                @Override
+//                public void onClick(String cardName) {
+//                    Intent i = new Intent(Homepage.this, CardDetail.class);
+//                    i.putExtra("cardName", cardName);
+//                    startActivity(i);
+//                }
+//            });
+//
+//        }catch (Exception e) {
+//            System.out.println(e.getMessage());
+//        }
+//    }
+    /* END COLLECTION CODE */
 
 }
