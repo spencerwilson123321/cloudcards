@@ -7,8 +7,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 
 import android.Manifest;
@@ -17,8 +15,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
-import android.os.StrictMode;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -62,11 +58,11 @@ import java.util.List;
 
 import io.magicthegathering.javasdk.api.CardAPI;
 import io.magicthegathering.javasdk.api.MTGAPI;
+import io.magicthegathering.javasdk.resource.Card;
 
 
 public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemClickListener {
 
-    // private Button showMenu;
     Button showMenu;
     private String mCurrentPhotoPath;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -92,7 +88,7 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
         DB = new DBHelper(getApplicationContext());
         this.cont = this;
         // Getting image preview
-//        image_preview = findViewById(R.id.image_preview);
+        image_preview = findViewById(R.id.image_preview);
         // permissions
         cameraPermission = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
         storagePermission = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -117,7 +113,6 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
                                 Intent intent = new Intent(getApplicationContext(), Collection.class);
                                 intent.putExtra("userID", userID);
                                 startActivity(intent);
-                                // return true;
                             break;
                             case "Search Card":
                                 Intent search_intent = new Intent(getApplicationContext(), CollectionSearch.class);
@@ -208,8 +203,8 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-//                BitmapDrawable bitmapDrawable = (BitmapDrawable) image_preview.getDrawable();
-//                Bitmap bitmap = bitmapDrawable.getBitmap();
+                BitmapDrawable bitmapDrawable = (BitmapDrawable) image_preview.getDrawable();
+                Bitmap bitmap = bitmapDrawable.getBitmap();
                 TextRecognizer recognizer = new TextRecognizer.Builder(getApplicationContext()).build();
                 if (!recognizer.isOperational()) {
                     Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
@@ -271,6 +266,7 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
                 }
         }
     }
+
 
 
 
@@ -338,4 +334,5 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
 //        }
 //    }
     /* END COLLECTION CODE */
+
 }
