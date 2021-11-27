@@ -51,16 +51,23 @@ public class UITest {
     @Test
     public void register_user() {
         onView(withId(R.id.start_register_button)).perform(click());
-        onView(withId(R.id.register_email)).perform(clearText(),typeText("test"), closeSoftKeyboard());
-        onView(withId(R.id.register_password_1)).perform(clearText(),typeText("test"), closeSoftKeyboard());
-        onView(withId(R.id.register_password_2)).perform(clearText(),typeText("test"), closeSoftKeyboard());
+//        onView(withId(R.id.register_email)).perform(clearText(),typeText("test"), closeSoftKeyboard());
+//        onView(withId(R.id.register_password_1)).perform(clearText(),typeText("test"), closeSoftKeyboard());
+//        onView(withId(R.id.register_password_2)).perform(clearText(),typeText("test"), closeSoftKeyboard());
+        onView(withId(R.id.register_email)).perform(replaceText("test"));
+        onView(withId(R.id.register_password_1)).perform(replaceText("test"));
+        onView(withId(R.id.register_password_2)).perform(replaceText("test"));
         onView(withId(R.id.register_button)).perform(click());
         onView(withId(R.id.register_cancel)).perform(click());
 
-        onView(withId(R.id.login_email)).perform(clearText(),typeText("test"), closeSoftKeyboard());
-        onView(withId(R.id.login_password)).perform(clearText(),typeText("test"), closeSoftKeyboard());
+        onView(withId(R.id.login_email)).perform(replaceText("test"));
+        onView(withId(R.id.login_password)).perform(replaceText("test"));
+//        onView(withId(R.id.login_email)).perform(clearText(),typeText("test"), closeSoftKeyboard());
+//        onView(withId(R.id.login_password)).perform(clearText(),typeText("test"), closeSoftKeyboard());
         onView(withId(R.id.login_button)).perform(click());
         onView(withId(R.id.show_dropdown_menu)).perform(click());
+        onView(withId(R.id.dropdown_menu_main)).perform(click());
+        onView(withId(R.id.dropdown_menu1)).perform(click());
     }
 
 //    @Test
