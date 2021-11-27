@@ -4,20 +4,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.view.ContextThemeWrapper;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.PopupMenu;
 import android.widget.Toast;
 
-import com.example.cloudcards.database.DBHelper;
+import com.example.cloudcards.View.HomepageActivity;
+import com.example.cloudcards.Model.DBHelper;
 
 import java.util.ArrayList;
 
@@ -61,7 +58,7 @@ public class CollectionSearch extends AppCompatActivity {
     }
 
     private void goBackHome(View view) {
-        Intent i = new Intent(getApplicationContext(), Homepage.class);
+        Intent i = new Intent(getApplicationContext(), HomepageActivity.class);
         i.putExtra("userID", userID);
         startActivity(i);
     }

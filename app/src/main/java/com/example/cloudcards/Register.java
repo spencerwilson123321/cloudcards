@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.cloudcards.database.DBHelper;
+import com.example.cloudcards.Model.DBHelper;
 
 public class Register extends AppCompatActivity {
 

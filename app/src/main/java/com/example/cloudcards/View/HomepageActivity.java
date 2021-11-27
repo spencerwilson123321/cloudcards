@@ -1,4 +1,4 @@
-package com.example.cloudcards;
+package com.example.cloudcards.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,11 +19,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.PopupMenu;
 import android.widget.Toast;
+import com.example.cloudcards.Collection;
+import com.example.cloudcards.CollectionSearch;
 import com.example.cloudcards.Presenter.HomepageActivityPresenter;
+import com.example.cloudcards.R;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
-public class Homepage extends AppCompatActivity implements MenuItem.OnMenuItemClickListener {
+public class HomepageActivity extends AppCompatActivity implements MenuItem.OnMenuItemClickListener {
 
     Button showMenu;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -55,18 +58,18 @@ public class Homepage extends AppCompatActivity implements MenuItem.OnMenuItemCl
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         switch (menuItem.getTitle().toString()) {
-                             case "Add Card": takePhoto();
-                            break;
+                            case "Add Card": takePhoto();
+                                break;
                             case "View Collection":
                                 Intent intent = new Intent(getApplicationContext(), Collection.class);
                                 intent.putExtra("userID", userID);
                                 startActivity(intent);
-                            break;
+                                break;
                             case "Search Card":
                                 Intent search_intent = new Intent(getApplicationContext(), CollectionSearch.class);
                                 search_intent.putExtra("userID", userID);
                                 startActivity(search_intent);
-                            break;
+                                break;
                         }
                         return true;
                     }

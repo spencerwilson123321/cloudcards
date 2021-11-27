@@ -4,31 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.ContextThemeWrapper;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.PopupMenu;
-import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
-import com.example.cloudcards.database.DBHelper;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.example.cloudcards.View.HomepageActivity;
+import com.example.cloudcards.Model.DBHelper;
 
 import java.util.ArrayList;
-import java.util.concurrent.CompletableFuture;
 
 public class Collection extends AppCompatActivity {
     private Button backButton;
@@ -50,7 +34,7 @@ public class Collection extends AppCompatActivity {
     }
 
     private void goBackHome(View view){
-        Intent i = new Intent(getApplicationContext(), Homepage.class);
+        Intent i = new Intent(getApplicationContext(), HomepageActivity.class);
         i.putExtra("userID", userID);
         startActivity(i);
     }

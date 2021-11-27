@@ -12,7 +12,7 @@ import android.widget.Toast;
 import com.example.cloudcards.APIHelper;
 import com.example.cloudcards.Card;
 import com.example.cloudcards.VolleyCallback;
-import com.example.cloudcards.database.DBHelper;
+import com.example.cloudcards.Model.DBHelper;
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;

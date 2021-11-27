@@ -27,7 +27,7 @@
             android:name=".Register"
             android:exported="true" />
         <activity
-            android:name=".Homepage"
+            android:name=".View.HomepageActivity"
             android:exported="true" />
         <activity
             android:name=".Login"

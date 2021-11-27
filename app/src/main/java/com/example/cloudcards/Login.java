@@ -9,7 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.cloudcards.database.DBHelper;
+import com.example.cloudcards.View.HomepageActivity;
+import com.example.cloudcards.Model.DBHelper;
 
 public class Login extends AppCompatActivity {
 
@@ -39,7 +40,7 @@ public class Login extends AppCompatActivity {
                     if (checkEmailPassword == true) {
                         Toast.makeText(getApplicationContext(), "Sign in success", Toast.LENGTH_SHORT).show();
                         int userID = db.getUserID(emailText, pass);
-                        Intent intent = new Intent(getApplicationContext(), Homepage.class);
+                        Intent intent = new Intent(getApplicationContext(), HomepageActivity.class);
                         intent.putExtra("userID", userID);
                         startActivity(intent);
                     } else {
