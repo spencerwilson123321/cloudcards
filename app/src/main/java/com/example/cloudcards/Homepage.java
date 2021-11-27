@@ -6,8 +6,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
-
 import android.Manifest;
 import android.content.ContentValues;
 import android.content.Context;
@@ -26,29 +24,22 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.PopupMenu;
 import android.widget.Toast;
-
 import com.example.cloudcards.database.DBHelper;
 import com.google.android.gms.vision.Frame;
 import com.google.android.gms.vision.text.TextBlock;
 import com.google.android.gms.vision.text.TextRecognizer;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
-
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.util.ArrayList;
-
-//import io.magicthegathering.javasdk.resource.Card;
 
 
 public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemClickListener {
 
     Button showMenu;
-    private String mCurrentPhotoPath;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int SEARCH_ACTIVITY_REQUEST_CODE = 2;
-    private Context cont;
     Uri image_uri;
     String cameraPermission[];
     String storagePermission[];
@@ -62,15 +53,12 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.homepage);
         // Setup card collection
-//        setCollectionAdapter();
         userID = getIntent().getIntExtra("userID", 0);
         API = new APIHelper(getApplicationContext());
         DB = new DBHelper(getApplicationContext());
-        this.cont = this;
         // permissions
         cameraPermission = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
         storagePermission = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
-
         showMenu = (Button) findViewById(R.id.backButton);
         showMenu.setText("Menu");
         showMenu.setOnClickListener(new View.OnClickListener() {
@@ -80,7 +68,6 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
                 PopupMenu dropDownMenu = new PopupMenu(wrapper, showMenu);
                 dropDownMenu.getMenuInflater().inflate(R.menu.drop_down_menu, dropDownMenu.getMenu());
                 dropDownMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         switch (menuItem.getTitle().toString()) {
@@ -127,7 +114,6 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == SEARCH_ACTIVITY_REQUEST_CODE) {
-
         }
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             CropImage.activity(image_uri).setGuidelines(CropImageView.Guidelines.ON).start(this);
@@ -204,13 +190,8 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
 
     private void dialogueAddCard(Card card){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Do you want to add this card to your collection?"
-                +"\n"+card.getCard_name()
-//                + "\n" + card.getType()
-//                + "\n" + card.getCard_mana()
-        );
-        builder
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        builder.setMessage("Do you want to add this card to your collection?"+"\n"+card.getCard_name());
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         boolean result = dbAddCard(card);
@@ -221,14 +202,14 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
                         }
                     }
                 });
-         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.cancel();
                         Toast.makeText(getApplicationContext(), "Card not added to Collection", Toast.LENGTH_LONG).show();
                     }
                 });
-         builder.setTitle("Confirm Card");
+        builder.setTitle("Confirm Card");
         builder.show();
     }
 
