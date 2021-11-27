@@ -8,12 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.example.cloudcards.Presenter.LoginActivityPresenter;
 import com.example.cloudcards.R;
-import com.example.cloudcards.Register;
-import com.example.cloudcards.View.HomepageActivity;
-import com.example.cloudcards.Model.DBHelper;
 
 public class LoginActivity extends AppCompatActivity {
 
