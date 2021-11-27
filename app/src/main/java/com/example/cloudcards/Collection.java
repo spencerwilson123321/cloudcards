@@ -1,5 +1,6 @@
 package com.example.cloudcards;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
@@ -17,6 +18,7 @@ import android.widget.Button;
 import android.widget.PopupMenu;
 import androidx.appcompat.widget.SearchView;
 import android.widget.Toast;
+import androidx.appcompat.widget.Toolbar;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -47,8 +49,15 @@ public class Collection extends AppCompatActivity {
         DB = new DBHelper(getApplicationContext());
         userID = getIntent().getIntExtra("userID", 0);
         setContentView(R.layout.collection);
+        showActionBar();
         //setShowMenu();
         setCollectionAdapter();
+    }
+
+    private void showActionBar() {
+        Toolbar searchBar = (Toolbar) findViewById(R.id.search_toolbar);
+        searchBar.setTitle("Search Collection");
+        setSupportActionBar(searchBar);
     }
 
     private void setShowMenu() {
