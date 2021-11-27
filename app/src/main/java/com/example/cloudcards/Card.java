@@ -16,7 +16,9 @@ public class Card implements Parcelable {
             new Card(81, "Chromeshell Crab", "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=470627&type=card",  "4U", "Morph {4}{U} (You may cast this card face down as a 2/2 creature for {3}. Turn it face up any time for its morph cost.)\n",
                 3, 3),
             new Card(27, "Lunarch Veteran // Luminous Phantom", "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=534783&type=card", "W", "Whenever another creature enters the battlefield under your control, you gain 1 life.\n",
-                    1, 1)
+                    1, 1),
+            new Card(11, "Cave People", "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=2264&type=card", "1RR", "Whenever Cave People attacks, it gets +1/-2 until end of turn.\n", 1, 4),
+            new Card(55, "Rings a Bell", "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=479422&type=card", "2UU", "As Rings a Bell enters the battlefield, choose a word with four or more letters.\n", 0, 0)
     };
 
     /**

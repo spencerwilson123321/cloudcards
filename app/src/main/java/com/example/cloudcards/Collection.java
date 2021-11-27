@@ -9,10 +9,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.PopupMenu;
+import androidx.appcompat.widget.SearchView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -28,12 +31,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 
 public class Collection extends AppCompatActivity {
     private Button showMenu;
     private DBHelper DB;
     private APIHelper API;
+    private CollectionAdapter adapter;
     int userID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +47,7 @@ public class Collection extends AppCompatActivity {
         DB = new DBHelper(getApplicationContext());
         userID = getIntent().getIntExtra("userID", 0);
         setContentView(R.layout.collection);
-        setShowMenu();
+        //setShowMenu();
         setCollectionAdapter();
     }
 
@@ -80,7 +85,8 @@ public class Collection extends AppCompatActivity {
         try {
             RecyclerView collectionRecycler = findViewById(R.id.collection_recycler);
 
-            ArrayList<Card> cards = DB.getCardsByUserID(userID);
+            //ArrayList<Card> cards = DB.getCardsByUserID(userID);
+            ArrayList<Card> cards = new ArrayList<>(Arrays.asList(Card.getAllCards()));
             Card[] test_cards = new Card[cards.size()];
             test_cards = cards.toArray(test_cards);
 
@@ -94,7 +100,7 @@ public class Collection extends AppCompatActivity {
 
 
 
-            CollectionAdapter adapter = new CollectionAdapter(cardNames, images, cards);
+            adapter = new CollectionAdapter(cardNames, images, cards);
             collectionRecycler.setAdapter(adapter);
 
             StaggeredGridLayoutManager lm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
@@ -116,4 +122,26 @@ public class Collection extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.filter_search, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+        return true;
+    }
 }

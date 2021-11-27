@@ -58,7 +58,7 @@ import java.util.List;
 
 import io.magicthegathering.javasdk.api.CardAPI;
 import io.magicthegathering.javasdk.api.MTGAPI;
-import io.magicthegathering.javasdk.resource.Card;
+//import io.magicthegathering.javasdk.resource.Card;
 
 
 public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemClickListener {
