@@ -58,7 +58,8 @@ import java.util.List;
 
 import io.magicthegathering.javasdk.api.CardAPI;
 import io.magicthegathering.javasdk.api.MTGAPI;
-import io.magicthegathering.javasdk.resource.Card;
+//import io.magicthegathering.javasdk.resource.Card;
+import com.example.cloudcards.Card;
 
 
 public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemClickListener {
@@ -68,7 +69,6 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int SEARCH_ACTIVITY_REQUEST_CODE = 2;
     private Context cont;
-    ImageView image_preview;
     Uri image_uri;
     String cameraPermission[];
     String storagePermission[];
@@ -87,8 +87,6 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
         API = new APIHelper(getApplicationContext());
         DB = new DBHelper(getApplicationContext());
         this.cont = this;
-        // Getting image preview
-        image_preview = findViewById(R.id.image_preview);
         // permissions
         cameraPermission = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
         storagePermission = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -136,7 +134,6 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
         values.put(MediaStore.Images.Media.TITLE, "NewPic");
         values.put(MediaStore.Images.Media.DESCRIPTION, "Image to text");
         image_uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-
         // Create and start the camera intent.
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, image_uri);
@@ -194,8 +191,6 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 Uri resultUri = result.getUri();
-                // set image to imageview
-                //image_preview.setImageURI(resultUri);
                 // get drawable bitmap for text recognition
                 Bitmap uriBit =  null;
                 try {
@@ -203,8 +198,6 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                BitmapDrawable bitmapDrawable = (BitmapDrawable) image_preview.getDrawable();
-                Bitmap bitmap = bitmapDrawable.getBitmap();
                 TextRecognizer recognizer = new TextRecognizer.Builder(getApplicationContext()).build();
                 if (!recognizer.isOperational()) {
                     Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
