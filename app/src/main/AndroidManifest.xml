@@ -24,7 +24,7 @@
             android:name=".Collection"
             android:exported="false" />
         <activity
-            android:name=".Register"
+            android:name=".View.RegisterActivity"
             android:exported="true" />
         <activity
             android:name=".View.HomepageActivity"

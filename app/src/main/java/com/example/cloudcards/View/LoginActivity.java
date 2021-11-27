@@ -19,19 +19,18 @@ public class LoginActivity extends AppCompatActivity {
 
     EditText email, password;
     Button sign_in;
-    DBHelper db;
     LoginActivityPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
+        // Uncomment this to test registration and login, etc.
 //        getApplicationContext().deleteDatabase("cloudcards.db");
         presenter = new LoginActivityPresenter(getApplicationContext());
         email = (EditText) findViewById(R.id.login_email);
         password = (EditText) findViewById(R.id.login_password);
         sign_in = (Button) findViewById(R.id.login_button);
-        db = new DBHelper(this);
 
         sign_in.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
      * @param view
      */
     public void register(View view) {
-        Intent intent = new Intent(this, Register.class);
+        Intent intent = new Intent(this, RegisterActivity.class);
         startActivity(intent);
     }
 
