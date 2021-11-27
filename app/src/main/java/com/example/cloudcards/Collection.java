@@ -33,13 +33,11 @@ import java.util.concurrent.CompletableFuture;
 public class Collection extends AppCompatActivity {
     private Button backButton;
     private DBHelper DB;
-    private APIHelper API;
+
     int userID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.collection);
-        API = new APIHelper(getApplicationContext());
         DB = new DBHelper(getApplicationContext());
         backButton = findViewById(R.id.backButton);
         userID = getIntent().getIntExtra("userID", 0);
@@ -57,9 +55,13 @@ public class Collection extends AppCompatActivity {
 
     private void setCollectionAdapter() {
         try {
+            //              view
             RecyclerView collectionRecycler = findViewById(R.id.collection_recycler);
-
+            //call to presenter
+            //              presenter
+            //call to model
             ArrayList<Card> cards = DB.getCardsByUserID(userID);
+            //model returns data to presenter
             Card[] test_cards = new Card[cards.size()];
             test_cards = cards.toArray(test_cards);
 
@@ -70,6 +72,8 @@ public class Collection extends AppCompatActivity {
                 cardNames[i] = test_cards[i].getCard_name();
                 images[i] = test_cards[i].getCard_img();
             }
+            //returns data to view
+            //              view
             CollectionAdapter adapter = new CollectionAdapter(cardNames, images, cards);
             collectionRecycler.setAdapter(adapter);
             StaggeredGridLayoutManager lm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
