@@ -20,10 +20,11 @@
         <entry key="app/src/main/res/layout/homepage.xml" value="0.14990942028985507" />
         <entry key="app/src/main/res/layout/login.xml" value="0.14990942028985507" />
         <entry key="app/src/main/res/layout/register.xml" value="0.14990942028985507" />
+        <entry key="app/src/main/res/menu/drop_down_menu.xml" value="0.1765625" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
