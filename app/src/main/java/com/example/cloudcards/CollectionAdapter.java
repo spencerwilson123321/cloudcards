@@ -20,6 +20,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.ViewHolder> implements Filterable {
     private ArrayList<Card> cardList;
@@ -38,13 +39,13 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
             if (constraint == null || constraint.length() == 0){
                 filteredCards.addAll(cardListFull);
             } else {
+                Stream<Card> cardStream = cardListFull.stream();
                 String filterPattern = constraint.toString().toLowerCase().trim();
 
-                for(Card cardItem : cardListFull) {
-                    if(cardItem.getCard_name().toLowerCase().contains(filterPattern)) {
-                        filteredCards.add(cardItem);
-                    }
-                }
+                cardStream
+                        .filter(c -> c.getCard_name().toLowerCase()
+                        .contains(filterPattern))
+                        .forEach(filteredCards::add);
             }
             FilterResults results = new FilterResults();
             results.values = filteredCards;
