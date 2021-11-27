@@ -94,8 +94,8 @@ public class Collection extends AppCompatActivity {
         try {
             RecyclerView collectionRecycler = findViewById(R.id.collection_recycler);
 
-            //ArrayList<Card> cards = DB.getCardsByUserID(userID);
-            ArrayList<Card> cards = new ArrayList<>(Arrays.asList(Card.getAllCards()));
+            ArrayList<Card> cards = DB.getCardsByUserID(userID);
+            //ArrayList<Card> cards = new ArrayList<>(Arrays.asList(Card.getAllCards()));
 
             adapter = new CollectionAdapter(cards);
             collectionRecycler.setAdapter(adapter);
