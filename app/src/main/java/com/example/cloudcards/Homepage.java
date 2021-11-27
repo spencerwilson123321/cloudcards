@@ -92,18 +92,17 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
         storagePermission = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
         showMenu = (Button) findViewById(R.id.show_dropdown_menu);
+        showMenu.setText("Menu");
         showMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Context wrapper = new ContextThemeWrapper(getApplicationContext(), R.style.PopupMenu);
                 PopupMenu dropDownMenu = new PopupMenu(wrapper, showMenu);
                 dropDownMenu.getMenuInflater().inflate(R.menu.drop_down_menu, dropDownMenu.getMenu());
-                showMenu.setText("Menu");
                 dropDownMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
 
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
-                        Toast.makeText(getApplicationContext(), "You have clicked" + menuItem.getTitle(), Toast.LENGTH_LONG).show();
                         switch (menuItem.getTitle().toString()) {
                             case "Add Card": takePhoto();
                             break;
@@ -120,13 +119,10 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
                         }
                         return true;
                     }
-
                 });
                 dropDownMenu.show();
             }
-
         });
-
     }
 
     private void pickCamera() {
@@ -146,37 +142,6 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
         } else {
             pickCamera();
         }
-    }
-
-    public void startCollectionActivity(MenuItem menuItem) {
-//        try {
-//            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-//            StrictMode.setThreadPolicy(policy);
-//            MTGAPI.setConnectTimeout(60);
-//            MTGAPI.setReadTimeout(60);
-//            MTGAPI.setWriteTimeout(60);
-//            List<String> a = new ArrayList<>();
-//            a.add("name:avacyn");
-//            List<Card> card = CardAPI.getAllCards(a);
-//            Toast.makeText(this, card.get(0).getName(), Toast.LENGTH_LONG).show();
-//
-//        }catch (Exception e) {
-//
-//        }
-    }
-
-    public void startSearchActivity(MenuItem menuItem) {
-
-    }
-
-    public File createImageFile(String name) {
-        File a = null;
-        try {
-            a = File.createTempFile(name, ".jpg", this.getExternalFilesDir(Environment.DIRECTORY_PICTURES) );
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return a;
     }
 
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -261,19 +226,23 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
     }
 
 
-
-
     private void dialogueAddCard(Card card){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Do you want to add this card to your collection?"
                 +"\n"+card.getCard_name()
-                + "\n" + card.getType()
-                + "\n" + card.getCard_mana());
+//                + "\n" + card.getType()
+//                + "\n" + card.getCard_mana()
+        );
         builder
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        dbAddCard(card);
+                        boolean result = dbAddCard(card);
+                        if (result == true) {
+                            Toast.makeText(getApplicationContext(), "Card added successfully", Toast.LENGTH_SHORT);
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Add Card Failed.", Toast.LENGTH_SHORT);
+                        }
                     }
                 });
          builder       .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -287,45 +256,12 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
         builder.show();
     }
 
-    private void dbAddCard(Card card){
-        DB.insertCard(userID, card);
+    private boolean dbAddCard(Card card){
+        boolean result = DB.insertCard(userID, card);
         ArrayList<Card> cards = DB.getCardsByUserID(userID);
         Log.i("cards", cards.toString());
+        return result;
     }
 
-    /* COLLECTION CODE COPIED START HERE */
-//    private void setCollectionAdapter() {
-//        try {
-//            RecyclerView collectionRecycler = findViewById(R.id.collection_recycler);
-//            com.example.cloudcards.Card[] test_cards = Card.getAllCards();
-//
-//            String[] cardNames = new String[test_cards.length];
-//            String[] images = new String[test_cards.length];
-//
-//            for(int i = 0; i < test_cards.length; i++) {
-//                cardNames[i] = test_cards[i].getCard_name();
-//                images[i] = test_cards[i].getCard_img();
-//            }
-//
-//            CollectionAdapter adapter = new CollectionAdapter(cardNames, images);
-//            collectionRecycler.setAdapter(adapter);
-//
-//            StaggeredGridLayoutManager lm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-//            collectionRecycler.setLayoutManager(lm);
-//
-//            adapter.setListener(new CollectionAdapter.Listener() {
-//                @Override
-//                public void onClick(String cardName) {
-//                    Intent i = new Intent(Homepage.this, CardDetail.class);
-//                    i.putExtra("cardName", cardName);
-//                    startActivity(i);
-//                }
-//            });
-//
-//        }catch (Exception e) {
-//            System.out.println(e.getMessage());
-//        }
-//    }
-    /* END COLLECTION CODE */
 
 }
