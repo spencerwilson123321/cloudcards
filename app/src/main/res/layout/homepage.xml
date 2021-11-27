@@ -19,7 +19,7 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <Button
-        android:id="@+id/show_dropdown_menu"
+        android:id="@+id/backButton"
         android:layout_width="88dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"

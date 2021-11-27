@@ -3,6 +3,7 @@
     <string name="menu">Menu</string>
     <string name="next">Next</string>
     <string name="back">Back</string>
+    <string name="go_back_homepage">Back to Home</string>
     <string name="sign_in">Sign In</string>
     <string name="register">No Account? Register Now.</string>
     <string name="register_email_hint">Enter Email Address</string>

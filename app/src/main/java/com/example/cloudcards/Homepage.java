@@ -6,35 +6,25 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
 
 
 import android.Manifest;
-import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.ContextThemeWrapper;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.PopupMenu;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.cloudcards.database.DBHelper;
@@ -44,22 +34,12 @@ import com.google.android.gms.vision.text.TextRecognizer;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-import io.magicthegathering.javasdk.api.CardAPI;
-import io.magicthegathering.javasdk.api.MTGAPI;
 //import io.magicthegathering.javasdk.resource.Card;
-import com.example.cloudcards.Card;
 
 
 public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemClickListener {
@@ -91,7 +71,7 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
         cameraPermission = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
         storagePermission = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
-        showMenu = (Button) findViewById(R.id.show_dropdown_menu);
+        showMenu = (Button) findViewById(R.id.backButton);
         showMenu.setText("Menu");
         showMenu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -235,9 +215,9 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
                     public void onClick(DialogInterface dialogInterface, int i) {
                         boolean result = dbAddCard(card);
                         if (result == true) {
-                            Toast.makeText(getApplicationContext(), "Card added to collection.", Toast.LENGTH_LONG);
+                            Toast.makeText(getApplicationContext(), "Card added to collection.", Toast.LENGTH_LONG).show();
                         } else {
-                            Toast.makeText(getApplicationContext(), "Add Card Failed.", Toast.LENGTH_LONG);
+                            Toast.makeText(getApplicationContext(), "Add Card Failed.", Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -245,7 +225,7 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.cancel();
-                        Toast.makeText(getApplicationContext(), "Card not added to Collection", Toast.LENGTH_LONG);
+                        Toast.makeText(getApplicationContext(), "Card not added to Collection", Toast.LENGTH_LONG).show();
                     }
                 });
          builder.setTitle("Confirm Card");

@@ -23,7 +23,7 @@ import java.util.ArrayList;
 
 public class CollectionSearch extends AppCompatActivity {
 
-    private Button showMenu;
+    private Button backButton;
     private DBHelper DB;
     int userID;
     EditText search_bar;
@@ -35,14 +35,12 @@ public class CollectionSearch extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_collection_search);
-
         DB = new DBHelper(getApplicationContext());
         userID = getIntent().getIntExtra("userID", 0);
-
         search_bar = (EditText) findViewById(R.id.search_bar);
         search_button = (Button) findViewById(R.id.search_button);
         collectionRecycler = findViewById(R.id.collection_recycler);
-
+        backButton = findViewById(R.id.backButton);
         search_button.setOnClickListener(view -> {
             String search = search_bar.getText().toString();
             if (search.equals("")) {
@@ -56,8 +54,6 @@ public class CollectionSearch extends AppCompatActivity {
                 }
             }
         });
-
-        setShowMenu();
     }
 
     public ArrayList<Card> searchCardsByName(int userID, String search_val){
@@ -81,36 +77,6 @@ public class CollectionSearch extends AppCompatActivity {
         return cards;
     };
 
-    private void setShowMenu() {
-        showMenu = (Button) findViewById(R.id.show_dropdown_menu);
-        showMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Context wrapper = new ContextThemeWrapper(getApplicationContext(), R.style.PopupMenu);
-                PopupMenu dropDownMenu = new PopupMenu(wrapper, showMenu);
-                dropDownMenu.getMenuInflater().inflate(R.menu.drop_down_menu, dropDownMenu.getMenu());
-                showMenu.setText("Menu");
-                dropDownMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-
-                    @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        Toast.makeText(getApplicationContext(), "You have clicked" + menuItem.getTitle(), Toast.LENGTH_LONG).show();
-                        switch (menuItem.getItemId()) {
-                            case R.id.dropdown_menu2:
-                                Intent intent = new Intent(getApplicationContext(), Collection.class);
-                                startActivity(intent);
-                                return true;
-                        }
-                        return true;
-                    }
-
-                });
-                dropDownMenu.show();
-            }
-
-        });
-    }
-
     private void setCollectionAdapter(ArrayList<Card> cards) {
         try {
             Card[] test_cards = new Card[cards.size()];
@@ -123,13 +89,10 @@ public class CollectionSearch extends AppCompatActivity {
                 cardNames[i] = test_cards[i].getCard_name();
                 images[i] = test_cards[i].getCard_img();
             }
-
             CollectionAdapter adapter = new CollectionAdapter(cardNames, images, cards);
             collectionRecycler.setAdapter(adapter);
-
             StaggeredGridLayoutManager lm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
             collectionRecycler.setLayoutManager(lm);
-
             adapter.setListener(new CollectionAdapter.Listener() {
                 @Override
                 public void onClick(Card cardName) {
@@ -138,9 +101,6 @@ public class CollectionSearch extends AppCompatActivity {
                     startActivity(i);
                 }
             });
-
-
-
         }catch (Exception e) {
             System.out.println(e.getMessage());
         }
