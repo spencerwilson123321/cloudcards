@@ -124,7 +124,7 @@ public class CollectionSearch extends AppCompatActivity {
                 images[i] = test_cards[i].getCard_img();
             }
 
-            CollectionAdapter adapter = new CollectionAdapter(cardNames, images, cards);
+            CollectionAdapter adapter = new CollectionAdapter(cards);
             collectionRecycler.setAdapter(adapter);
 
             StaggeredGridLayoutManager lm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);

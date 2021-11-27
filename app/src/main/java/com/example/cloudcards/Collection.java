@@ -87,20 +87,8 @@ public class Collection extends AppCompatActivity {
 
             //ArrayList<Card> cards = DB.getCardsByUserID(userID);
             ArrayList<Card> cards = new ArrayList<>(Arrays.asList(Card.getAllCards()));
-            Card[] test_cards = new Card[cards.size()];
-            test_cards = cards.toArray(test_cards);
 
-            String[] cardNames = new String[test_cards.length];
-            String[] images = new String[test_cards.length];
-
-            for(int i = 0; i < test_cards.length; i++) {
-                cardNames[i] = test_cards[i].getCard_name();
-                images[i] = test_cards[i].getCard_img();
-            }
-
-
-
-            adapter = new CollectionAdapter(cardNames, images, cards);
+            adapter = new CollectionAdapter(cards);
             collectionRecycler.setAdapter(adapter);
 
             StaggeredGridLayoutManager lm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);

@@ -22,8 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.ViewHolder> implements Filterable {
-    private String[] card_names;
-    private String[] imageIds;
     private ArrayList<Card> cardList;
     private ArrayList<Card> cardListFull;
 
@@ -71,16 +69,14 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
         }
     }
 
-    public CollectionAdapter(String[] card_names, String[] imageIds, ArrayList<Card> cardList) {
-        this.card_names = card_names;
-        this.imageIds = imageIds;
+    public CollectionAdapter(ArrayList<Card> cardList) {
         this.cardList = cardList;
         this.cardListFull = new ArrayList<>(cardList);
     }
 
     @Override
     public int getItemCount() {
-        return card_names.length;
+        return this.cardList.size();
     }
 
     @Override
@@ -91,12 +87,12 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
+    public void onBindViewHolder(ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         final CardView cardView = holder.cardView;
 
         ImageView imageView = cardView.findViewById(R.id.card_image);
         Picasso.get()
-                .load(this.imageIds[position])
+                .load(this.cardList.get(position).getCard_img())
                 .placeholder(R.drawable.ic_launcher_background)
                 .into(imageView, new Callback() {
                     @Override
@@ -108,7 +104,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
                         Log.e("TAG", "onError:" + e.getMessage());
                     }
                 });
-        imageView.setContentDescription(card_names[position]);
+        imageView.setContentDescription(this.cardList.get(position).getCard_name());
 
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
