@@ -38,12 +38,21 @@ public class Collection extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.collection);
         API = new APIHelper(getApplicationContext());
         DB = new DBHelper(getApplicationContext());
         backButton = findViewById(R.id.backButton);
         userID = getIntent().getIntExtra("userID", 0);
-        setContentView(R.layout.collection);
         setCollectionAdapter();
+        backButton.setOnClickListener(view -> {
+            goBackHome(view);
+        });
+    }
+
+    private void goBackHome(View view){
+        Intent i = new Intent(getApplicationContext(), Homepage.class);
+        i.putExtra("userID", userID);
+        startActivity(i);
     }
 
     private void setCollectionAdapter() {

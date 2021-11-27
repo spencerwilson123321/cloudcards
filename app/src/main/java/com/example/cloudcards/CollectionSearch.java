@@ -41,6 +41,7 @@ public class CollectionSearch extends AppCompatActivity {
         search_button = (Button) findViewById(R.id.search_button);
         collectionRecycler = findViewById(R.id.collection_recycler);
         backButton = findViewById(R.id.backButton);
+
         search_button.setOnClickListener(view -> {
             String search = search_bar.getText().toString();
             if (search.equals("")) {
@@ -54,6 +55,15 @@ public class CollectionSearch extends AppCompatActivity {
                 }
             }
         });
+        backButton.setOnClickListener(view -> {
+            goBackHome(view);
+        });
+    }
+
+    private void goBackHome(View view) {
+        Intent i = new Intent(getApplicationContext(), Homepage.class);
+        i.putExtra("userID", userID);
+        startActivity(i);
     }
 
     public ArrayList<Card> searchCardsByName(int userID, String search_val){
