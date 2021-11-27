@@ -173,18 +173,14 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
                     API.getCardByName(name, new VolleyCallback() {
                         @Override
                         public void onSuccess(JSONObject result) {
-                            Card card = new Card(result);
-                            if (card == null){
-                                Toast.makeText(getApplicationContext(), "We were unable to identify your card. Please try again.", Toast.LENGTH_LONG).show();
-                            } else{
+                            if (result != null) {
+                                Card card = new Card(result);
                                 dialogueAddCard(card);
-                                //dbAddCard(card);
-
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Unable to Identify Card, please try again.", Toast.LENGTH_LONG).show();
                             }
-
                         }
                     });
-                    Toast.makeText(this, name, Toast.LENGTH_LONG).show();
                 }
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE){
                 Exception error = result.getError();
@@ -239,17 +235,17 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
                     public void onClick(DialogInterface dialogInterface, int i) {
                         boolean result = dbAddCard(card);
                         if (result == true) {
-                            Toast.makeText(getApplicationContext(), "Card added successfully", Toast.LENGTH_SHORT);
+                            Toast.makeText(getApplicationContext(), "Card added to collection.", Toast.LENGTH_LONG);
                         } else {
-                            Toast.makeText(getApplicationContext(), "Add Card Failed.", Toast.LENGTH_SHORT);
+                            Toast.makeText(getApplicationContext(), "Add Card Failed.", Toast.LENGTH_LONG);
                         }
                     }
                 });
-         builder       .setNegativeButton("No", new DialogInterface.OnClickListener() {
+         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.cancel();
-
+                        Toast.makeText(getApplicationContext(), "Card not added to Collection", Toast.LENGTH_LONG);
                     }
                 });
          builder.setTitle("Confirm Card");
