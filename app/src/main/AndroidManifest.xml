@@ -30,7 +30,7 @@
             android:name=".View.HomepageActivity"
             android:exported="true" />
         <activity
-            android:name=".Login"
+            android:name=".View.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
