@@ -1,6 +1,7 @@
 package com.example.cloudcards;
 
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -38,9 +39,16 @@ public class APIHelper {
     public void getCardByName(String name, final VolleyCallback callback) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         List<String> a = new ArrayList<>();
+        Uri.Builder builder = new Uri.Builder();
+        builder.scheme("https")
+                .authority("api.magicthegathering.io")
+                .appendPath("v1")
+                .appendPath("cards")
+                .appendQueryParameter("name", name);
+        String requestURI = builder.toString();
         JsonObjectRequest objectRequest = new JsonObjectRequest(
                 Request.Method.GET,
-                "https://api.magicthegathering.io/v1/cards?name=\""+name+"\"",
+                requestURI,
                 null,
                 new Response.Listener<JSONObject>() {
                     @Override

@@ -21,16 +21,17 @@
             android:name=".CardDetail"
             android:exported="false" />
         <activity
-            android:name=".Collection"
+            android:name=".View.CollectionActivity"
             android:exported="false" />
         <activity
-            android:name=".Register"
+            android:name=".View.RegisterActivity"
             android:exported="true" />
         <activity
-            android:name=".Homepage"
+            android:name=".View.HomepageActivity"
             android:exported="true" />
+
         <activity
-            android:name=".Login"
+            android:name=".View.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,6 +42,12 @@
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Theme.AppCompat" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.gms.vision.DEPENDENCIES"
+            android:value="ocr"/>
     </application>
 
 </manifest>

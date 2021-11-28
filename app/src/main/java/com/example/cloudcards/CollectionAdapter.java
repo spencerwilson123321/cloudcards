@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,11 +19,47 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
 
-public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.ViewHolder> {
-    private String[] card_names;
-    private String[] imageIds;
+public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.ViewHolder> implements Filterable {
     private ArrayList<Card> cardList;
+    private ArrayList<Card> cardListFull;
+
+    @Override
+    public Filter getFilter() {
+        return cardFilter;
+    }
+
+    private Filter cardFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<Card> filteredCards = new ArrayList<>();
+
+            if (constraint == null || constraint.length() == 0){
+                filteredCards.addAll(cardListFull);
+            } else {
+                Stream<Card> cardStream = cardListFull.stream();
+                String filterPattern = constraint.toString().toLowerCase().trim();
+
+                cardStream
+                        .filter(c -> c.getCard_name().toLowerCase()
+                        .contains(filterPattern))
+                        .forEach(filteredCards::add);
+            }
+            FilterResults results = new FilterResults();
+            results.values = filteredCards;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            cardList.clear();
+            cardList.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
+
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private CardView cardView;
@@ -32,15 +70,14 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
         }
     }
 
-    public CollectionAdapter(String[] card_names, String[] imageIds, ArrayList<Card> cardList) {
-        this.card_names = card_names;
-        this.imageIds = imageIds;
+    public CollectionAdapter(ArrayList<Card> cardList) {
         this.cardList = cardList;
+        this.cardListFull = new ArrayList<>(cardList);
     }
 
     @Override
     public int getItemCount() {
-        return card_names.length;
+        return this.cardList.size();
     }
 
     @Override
@@ -51,12 +88,12 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
+    public void onBindViewHolder(ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         final CardView cardView = holder.cardView;
 
         ImageView imageView = cardView.findViewById(R.id.card_image);
         Picasso.get()
-                .load(this.imageIds[position])
+                .load(this.cardList.get(position).getCard_img())
                 .placeholder(R.drawable.ic_launcher_background)
                 .into(imageView, new Callback() {
                     @Override
@@ -68,7 +105,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
                         Log.e("TAG", "onError:" + e.getMessage());
                     }
                 });
-        imageView.setContentDescription(card_names[position]);
+        imageView.setContentDescription(this.cardList.get(position).getCard_name());
 
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,7 +120,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
     }
 
     private Listener listener;
-    interface Listener {
+    public interface Listener {
         void onClick(Card cardName);
     }
 
