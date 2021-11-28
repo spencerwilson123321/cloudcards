@@ -61,7 +61,7 @@ public class HomepageActivity extends AppCompatActivity implements MenuItem.OnMe
                             case "Add Card": takePhoto();
                                 break;
                             case "View Collection":
-                                Intent intent = new Intent(getApplicationContext(), Collection.class);
+                                Intent intent = new Intent(getApplicationContext(), CollectionActivity.class);
                                 intent.putExtra("userID", userID);
                                 startActivity(intent);
                                 break;

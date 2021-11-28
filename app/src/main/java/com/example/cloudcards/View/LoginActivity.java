@@ -22,7 +22,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
         // Uncomment this to test registration and login, etc.
-//        getApplicationContext().deleteDatabase("cloudcards.db");
+  //    getApplicationContext().deleteDatabase("cloudcards.db");
         presenter = new LoginActivityPresenter(getApplicationContext());
         email = (EditText) findViewById(R.id.login_email);
         password = (EditText) findViewById(R.id.login_password);
