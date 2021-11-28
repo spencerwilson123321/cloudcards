@@ -47,7 +47,7 @@ public class Collection extends AppCompatActivity {
             goBackHome(view);
         });
     }
-    }
+
 
     private void showActionBar() {
         Toolbar searchBar = (Toolbar) findViewById(R.id.search_toolbar);
@@ -55,32 +55,6 @@ public class Collection extends AppCompatActivity {
         setSupportActionBar(searchBar);
     }
 
-    private void setShowMenu() {
-        showMenu = (Button) findViewById(R.id.show_dropdown_menu);
-        showMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Context wrapper = new ContextThemeWrapper(getApplicationContext(), R.style.PopupMenu);
-                PopupMenu dropDownMenu = new PopupMenu(wrapper, showMenu);
-                dropDownMenu.getMenuInflater().inflate(R.menu.drop_down_menu, dropDownMenu.getMenu());
-                showMenu.setText("Menu");
-                dropDownMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-
-                    @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        Toast.makeText(getApplicationContext(), "You have clicked" + menuItem.getTitle(), Toast.LENGTH_LONG).show();
-                        switch (menuItem.getItemId()) {
-                            case R.id.dropdown_menu2:
-                                Intent intent = new Intent(getApplicationContext(), Collection.class);
-                                startActivity(intent);
-                                return true;
-                        }
-                        return true;
-                    }
-
-                });
-                dropDownMenu.show();
-            }
 
     private void goBackHome(View view){
         Intent i = new Intent(getApplicationContext(), HomepageActivity.class);
@@ -97,21 +71,8 @@ public class Collection extends AppCompatActivity {
             //call to model
             ArrayList<Card> cards = DB.getCardsByUserID(userID);
             //model returns data to presenter
-            Card[] test_cards = new Card[cards.size()];
-            test_cards = cards.toArray(test_cards);
-
-            String[] cardNames = new String[test_cards.length];
-            String[] images = new String[test_cards.length];
-
-            for(int i = 0; i < test_cards.length; i++) {
-                cardNames[i] = test_cards[i].getCard_name();
-                images[i] = test_cards[i].getCard_img();
-            }
             //returns data to view
             //              view
-            CollectionAdapter adapter = new CollectionAdapter(cardNames, images, cards);
-            //ArrayList<Card> cards = new ArrayList<>(Arrays.asList(Card.getAllCards()));
-
             adapter = new CollectionAdapter(cards);
             collectionRecycler.setAdapter(adapter);
             StaggeredGridLayoutManager lm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);

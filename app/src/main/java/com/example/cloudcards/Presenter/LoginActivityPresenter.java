@@ -23,6 +23,7 @@ public class LoginActivityPresenter {
             Toast.makeText(loginContext, "Sign in success", Toast.LENGTH_SHORT).show();
             int userID = DB.getUserID(email, password);
             Intent intent = new Intent(loginContext, HomepageActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra("userID", userID);
             loginContext.startActivity(intent);
         } else {

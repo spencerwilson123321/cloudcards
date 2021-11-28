@@ -86,18 +86,6 @@ public class CollectionSearch extends AppCompatActivity {
 
     private void setCollectionAdapter(ArrayList<Card> cards) {
         try {
-            Card[] test_cards = new Card[cards.size()];
-            test_cards = cards.toArray(test_cards);
-
-            String[] cardNames = new String[test_cards.length];
-            String[] images = new String[test_cards.length];
-
-            for(int i = 0; i < test_cards.length; i++) {
-                cardNames[i] = test_cards[i].getCard_name();
-                images[i] = test_cards[i].getCard_img();
-            }
-            CollectionAdapter adapter = new CollectionAdapter(cardNames, images, cards);
-
             CollectionAdapter adapter = new CollectionAdapter(cards);
             collectionRecycler.setAdapter(adapter);
             StaggeredGridLayoutManager lm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
