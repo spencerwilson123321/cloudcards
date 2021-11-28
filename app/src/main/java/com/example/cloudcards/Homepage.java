@@ -151,6 +151,7 @@ public class Homepage extends AppCompatActivity  implements MenuItem.OnMenuItemC
         }
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             CropImage.activity(image_uri).setGuidelines(CropImageView.Guidelines.ON).start(this);
+            String test = "test";
         }
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE){
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
