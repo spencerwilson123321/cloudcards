@@ -15,10 +15,10 @@ public class RegisterActivityPresenter {
         DB = new DBHelper(registerContext);
     }
 
-    public void register(String email, String pass) {
-        Boolean checkUser = DB.checkEmail(email);
+    public void register(String username, String pass) {
+        Boolean checkUser = DB.checkUsername(username);
         if (checkUser == false) {
-            Boolean insert = DB.insertUser(email, pass);
+            Boolean insert = DB.insertUser(username, pass);
             if (insert) {
                 Toast.makeText(registerContext, "Registration Success", Toast.LENGTH_SHORT).show();
             } else {
