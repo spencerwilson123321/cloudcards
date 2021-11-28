@@ -83,7 +83,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
     }
 
     private Listener listener;
-    interface Listener {
+    public interface Listener {
         void onClick(Card cardName);
     }
 
