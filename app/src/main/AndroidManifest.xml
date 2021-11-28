@@ -15,7 +15,7 @@
         android:theme="@style/Theme.AppCompat.NoActionBar"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".CollectionSearch"
+            android:name=".View.CollectionSearchActivity"
             android:exported="true" />
         <activity
             android:name=".CardDetail"

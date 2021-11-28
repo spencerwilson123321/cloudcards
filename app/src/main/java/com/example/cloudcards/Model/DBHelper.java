@@ -86,6 +86,27 @@ public class DBHelper extends SQLiteOpenHelper {
         return cards;
     };
 
+    public ArrayList<Card> getCardsByName(String search_val, int userID) {
+        ArrayList<Card> cards = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("Select * from cards where userID = ? " +
+                "and card_name LIKE '%"+search_val+"%' ", new String[] {String.valueOf(userID)});
+        if(cursor.moveToFirst()) {
+            do {
+                cards.add(
+                        new Card(Integer.parseInt(cursor.getString(1)),
+                                cursor.getString(2),
+                                cursor.getString(3),
+                                cursor.getString(4),
+                                cursor.getString(5),
+                                Integer.parseInt(cursor.getString(6)),
+                                Integer.parseInt(cursor.getString(7)))
+                );
+            } while (cursor.moveToNext());
+        }
+        return cards;
+    }
+
     public Boolean insertUser(String email, String password){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();

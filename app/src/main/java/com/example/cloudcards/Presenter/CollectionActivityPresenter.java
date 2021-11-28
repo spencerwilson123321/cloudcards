@@ -13,14 +13,16 @@ public class CollectionActivityPresenter implements CloudCards.CollectionActivit
     private DBHelper DB;
     private CloudCards.CollectionActivityView cView;
     private int userID;
+    private Context context;
 
     public CollectionAdapter getAdapter() {
         return adapter;
     }
 
     private CollectionAdapter adapter;
-    public CollectionActivityPresenter(Context context, CloudCards.CollectionActivityView collectionView, int uID) {
-        DB = new DBHelper(context);
+    public CollectionActivityPresenter(Context c, CloudCards.CollectionActivityView collectionView, int uID) {
+        DB = new DBHelper(c);
+        context = c;
         cView = collectionView;
         userID = uID;
     }
@@ -29,8 +31,9 @@ public class CollectionActivityPresenter implements CloudCards.CollectionActivit
     public void go_CollectionInfo() {
         ArrayList<Card> cards = DB.getCardsByUserID(userID);
         //model returns data to presenter
-        CollectionAdapter adapter = new CollectionAdapter(cards);
+        adapter = new CollectionAdapter(cards);
         //returns data to view
+
         cView.showCollection(adapter);
     }
 
