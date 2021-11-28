@@ -3,6 +3,7 @@ package com.example.cloudcards;
 import static androidx.test.InstrumentationRegistry.getTargetContext;
 import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 import static androidx.test.espresso.action.ViewActions.clearText;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
@@ -15,9 +16,16 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.intent.Intents.intending;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasAction;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
+import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
+import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 //import static androidx.test.espresso.matcher.ViewMatchers.withText;
+
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.anyOf;
 
 import android.app.Activity;
 //import android.app.Instrumentation;
@@ -32,6 +40,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.AutoCompleteTextView;
 
 //import androidx.appcompat.widget.MenuPopupWindow;
 //import androidx.test.InstrumentationRegistry;
@@ -42,6 +51,12 @@ import android.view.View;
 //import androidx.test.espresso.matcher.RootMatchers;
 import androidx.test.InstrumentationRegistry;
 import androidx.test.core.app.ApplicationProvider;
+import androidx.test.espresso.ViewAction;
+import androidx.test.espresso.action.CoordinatesProvider;
+import androidx.test.espresso.action.GeneralClickAction;
+import androidx.test.espresso.action.Press;
+import androidx.test.espresso.action.Tap;
+import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.espresso.intent.Intents;
 import androidx.test.espresso.matcher.RootMatchers;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -58,6 +73,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.runner.intent.IntentCallback;
 import androidx.test.runner.intent.IntentMonitorRegistry;
 
+import com.example.cloudcards.View.LoginActivity;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.io.IOException;
@@ -68,8 +84,8 @@ import java.io.OutputStream;
 public class UITest {
 
     @Rule
-    public ActivityScenarioRule<Login> activityRule
-            = new ActivityScenarioRule<>(Login.class);
+    public ActivityScenarioRule<LoginActivity> activityRule
+            = new ActivityScenarioRule<>(LoginActivity.class);
 
     @Test
     public void register_user() {
@@ -93,7 +109,7 @@ public class UITest {
 //        onView(withId(R.id.login_email)).perform(clearText(),typeText("test"), closeSoftKeyboard());
 //        onView(withId(R.id.login_password)).perform(clearText(),typeText("test"), closeSoftKeyboard());
         onView(withId(R.id.login_button)).perform(click());
-        onView(withId(R.id.show_dropdown_menu)).perform(click());
+        onView(withId(R.id.menu)).perform(click());
 
 
 
@@ -115,6 +131,9 @@ public class UITest {
 //                result);
         intending(hasAction(MediaStore.ACTION_IMAGE_CAPTURE)).respondWith(
                 new Instrumentation.ActivityResult(Activity.RESULT_OK, null));
+
+//        intending(hasComponent(CropImage.class.getName())).respondWith(
+//                new Instrumentation.ActivityResult(Activity.RESULT_OK, null));
 
         IntentCallback intentCallback = new IntentCallback() {
             @Override
@@ -144,54 +163,42 @@ public class UITest {
                 .perform(click());
     }
 
-//    @Rule
-//    public ActivityScenarioRule<CollectionSearch> activityRule2
-//            = new ActivityScenarioRule<>(CollectionSearch.class);
-//
-//    @Test
-//    public void search_test() {
-//        onView(withId(R.id.search_bar)).perform(clearText(),typeText("squee"), closeSoftKeyboard());
-//        onView(withId(R.id.search_button)).perform(click());
-////        onView(withId(R.id.collection_recycler)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-//
-//    }
-
-/*
-    @Rule
-    public IntentsTestRule<Homepage> intentsTestRule =
-            new IntentsTestRule<>(Homepage.class);
-
     @Test
-    public void validateCameraScenario() {
-        onView(withId(R.id.login_email)).perform(clearText(),typeText("test"), closeSoftKeyboard());
-        onView(withId(R.id.login_password)).perform(clearText(),typeText("test"), closeSoftKeyboard());
+    public void collection_search() {
+        onView(withId(R.id.login_email)).perform(replaceText("test"));
+        onView(withId(R.id.login_password)).perform(replaceText("test"));
+//        onView(withId(R.id.login_email)).perform(clearText(),typeText("test"), closeSoftKeyboard());
+//        onView(withId(R.id.login_password)).perform(clearText(),typeText("test"), closeSoftKeyboard());
         onView(withId(R.id.login_button)).perform(click());
 
-        // Create a bitmap we can use for our simulated camera image
-        Bitmap img = BitmapFactory.decodeResource(
-                InstrumentationRegistry.getTargetContext().getResources(),
-                R.drawable.testcard);
+        onView(withId(R.id.menu)).perform(click());
+        onView(withText("View Collection"))
+                .inRoot(RootMatchers.isPlatformPopup())
+                .perform(click());
 
-        // Build a result to return from the Camera app
-        Intent resultData = new Intent();
-        resultData.putExtra("data", img);
-        Instrumentation.ActivityResult result = new Instrumentation.ActivityResult(Activity.RESULT_OK, resultData);
+//        openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
 
-        // Stub out the Camera. When an intent is sent to the Camera, this tells Espresso to respond
-        // with the ActivityResult we just created
-        intending(toPackage("com.android.camera")).respondWith(result);
-
-        // Now that we have the stub in place, click on the button in our app that launches into the Camera
-        onView(withId(R.id.show_dropdown_menu)).perform(click());
-//        onData(withId(R.id.show_dropdown_menu)).inRoot(RootMatchers.isPlatformPopup())
-//                .inAdapterView(CoreMatchers.<View>instanceOf(MenuPopupWindow.MenuDropDownListView.class)).atPosition(0).perform(click());
-
-        // We can also validate that an intent resolving to the "camera" activity has been sent out by our app
-        intended(toPackage("com.android.camera"));
-
-        // ... additional test steps and validation ...
-
+        // Click the item.
+//        onView(withText("World"))
+//                .perform(click());
+//
+//        onView(withId(R.id.search_toolbar)).perform(click());
+//        onView(withId(R.id.action_search))
+//                .inRoot(RootMatchers.isPlatformPopup())
+//                .perform(click());
+//        onView(withId(R.id.action_search)).perform(replaceText("squee"));
+//        onView(withId(R.id.collection_recycler)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+//
+        try {
+            openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
+        } catch (Exception e) {
+            //This is normal. Maybe we dont have overflow menu.
+        }
+        onView(anyOf(withText(R.string.filter_search), withId(R.id.action_search))).perform(click());
+//        onView(isAssignableFrom(AutoCompleteTextView.class)).perform(typeText("squee"));
+        onView(isAssignableFrom(AutoCompleteTextView.class)).perform(replaceText("squee"));
+//        onView(withId(R.id.collection_recycler)).perform(click());
+        onView(withId(R.id.collection_main)).perform(click());
+        onView(withId(R.id.collection_recycler)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
     }
-*/
-
 }
