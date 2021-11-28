@@ -3,7 +3,7 @@ package com.example.cloudcards.Presenter;
 import com.example.cloudcards.Card;
 import com.example.cloudcards.CloudCards;
 import com.example.cloudcards.CollectionAdapter;
-import com.example.cloudcards.database.DBHelper;
+import com.example.cloudcards.Model.DBHelper;
 
 import java.util.ArrayList;
 
