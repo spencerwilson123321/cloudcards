@@ -13,7 +13,7 @@ import com.example.cloudcards.R;
 
 public class LoginActivity extends AppCompatActivity {
 
-    EditText email, password;
+    EditText username, password;
     Button sign_in;
     LoginActivityPresenter presenter;
 
@@ -22,21 +22,21 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
         // Uncomment this to test registration and login, etc.
-  //    getApplicationContext().deleteDatabase("cloudcards.db");
+//      getApplicationContext().deleteDatabase("cloudcards.db");
         presenter = new LoginActivityPresenter(getApplicationContext());
-        email = (EditText) findViewById(R.id.login_email);
+        username = (EditText) findViewById(R.id.login_username);
         password = (EditText) findViewById(R.id.login_password);
         sign_in = (Button) findViewById(R.id.login_button);
 
         sign_in.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String emailText = email.getText().toString();
+                String usernameText = username.getText().toString();
                 String pass = password.getText().toString();
-                if (emailText.equals("") || pass.equals("")) {
+                if (usernameText.equals("") || pass.equals("")) {
                     Toast.makeText(getApplicationContext(), "Please enter all the fields", Toast.LENGTH_SHORT).show();
                 } else {
-                    presenter.signIn(emailText, pass);
+                    presenter.signIn(usernameText, pass);
                 }
             }
         });
