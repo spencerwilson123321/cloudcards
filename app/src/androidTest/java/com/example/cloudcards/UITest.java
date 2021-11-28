@@ -51,6 +51,7 @@ import android.widget.AutoCompleteTextView;
 //import androidx.test.espresso.matcher.RootMatchers;
 import androidx.test.InstrumentationRegistry;
 import androidx.test.core.app.ApplicationProvider;
+import androidx.test.espresso.Espresso;
 import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.action.CoordinatesProvider;
 import androidx.test.espresso.action.GeneralClickAction;
@@ -92,22 +93,22 @@ public class UITest {
         onView(withId(R.id.start_register_button)).perform(click());
 
         // Emulator lag messes up keyboard animation in test, using replace for now.
-//        onView(withId(R.id.register_email)).perform(clearText(),typeText("test"), closeSoftKeyboard());
-//        onView(withId(R.id.register_password_1)).perform(clearText(),typeText("test"), closeSoftKeyboard());
-//        onView(withId(R.id.register_password_2)).perform(clearText(),typeText("test"), closeSoftKeyboard());
-        onView(withId(R.id.register_email)).perform(replaceText("test"));
-        onView(withId(R.id.register_password_1)).perform(replaceText("test"));
-        onView(withId(R.id.register_password_2)).perform(replaceText("test"));
+//        onView(withId(R.id.register_email)).perform(replaceText("test"));
+//        onView(withId(R.id.register_password_1)).perform(replaceText("test"));
+//        onView(withId(R.id.register_password_2)).perform(replaceText("test"));
+        onView(withId(R.id.register_email)).perform(clearText(),typeText("test"));
+        onView(withId(R.id.register_password_1)).perform(clearText(),typeText("test"));
+        onView(withId(R.id.register_password_2)).perform(clearText(),typeText("test"), closeSoftKeyboard());
         onView(withId(R.id.register_button)).perform(click());
         onView(withId(R.id.register_cancel)).perform(click());
     }
 
     @Test
     public void homepage_add_card() {
-        onView(withId(R.id.login_email)).perform(replaceText("test"));
-        onView(withId(R.id.login_password)).perform(replaceText("test"));
-//        onView(withId(R.id.login_email)).perform(clearText(),typeText("test"), closeSoftKeyboard());
-//        onView(withId(R.id.login_password)).perform(clearText(),typeText("test"), closeSoftKeyboard());
+//        onView(withId(R.id.login_email)).perform(replaceText("test"));
+//        onView(withId(R.id.login_password)).perform(replaceText("test"));
+        onView(withId(R.id.login_email)).perform(clearText(),typeText("test"));
+        onView(withId(R.id.login_password)).perform(clearText(),typeText("test"), closeSoftKeyboard());
         onView(withId(R.id.login_button)).perform(click());
         onView(withId(R.id.menu)).perform(click());
 
@@ -165,10 +166,10 @@ public class UITest {
 
     @Test
     public void collection_search() {
-        onView(withId(R.id.login_email)).perform(replaceText("test"));
-        onView(withId(R.id.login_password)).perform(replaceText("test"));
-//        onView(withId(R.id.login_email)).perform(clearText(),typeText("test"), closeSoftKeyboard());
-//        onView(withId(R.id.login_password)).perform(clearText(),typeText("test"), closeSoftKeyboard());
+//        onView(withId(R.id.login_email)).perform(replaceText("test"));
+//        onView(withId(R.id.login_password)).perform(replaceText("test"));
+        onView(withId(R.id.login_email)).perform(clearText(),typeText("test"));
+        onView(withId(R.id.login_password)).perform(clearText(),typeText("test"), closeSoftKeyboard());
         onView(withId(R.id.login_button)).perform(click());
 
         onView(withId(R.id.menu)).perform(click());
@@ -195,9 +196,11 @@ public class UITest {
             //This is normal. Maybe we dont have overflow menu.
         }
         onView(anyOf(withText(R.string.filter_search), withId(R.id.action_search))).perform(click());
-//        onView(isAssignableFrom(AutoCompleteTextView.class)).perform(typeText("squee"));
-        onView(isAssignableFrom(AutoCompleteTextView.class)).perform(replaceText("squee"));
+//        onView(isAssignableFrom(AutoCompleteTextView.class)).perform(replaceText("squee"));
 //        onView(withId(R.id.collection_recycler)).perform(click());
+        onView(isAssignableFrom(AutoCompleteTextView.class))
+                .perform(clearText(), typeText("Jhessian Thief"), closeSoftKeyboard());
+
         onView(withId(R.id.collection_main)).perform(click());
         onView(withId(R.id.collection_recycler)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
     }
