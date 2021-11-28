@@ -1,4 +1,4 @@
-package com.example.cloudcards.database;
+package com.example.cloudcards.Model;
 
 import android.content.ContentValues;
 import android.content.Context;

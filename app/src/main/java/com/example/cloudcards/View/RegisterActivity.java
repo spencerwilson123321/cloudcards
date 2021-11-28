@@ -1,4 +1,4 @@
-package com.example.cloudcards;
+package com.example.cloudcards.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,25 +9,25 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.cloudcards.database.DBHelper;
+import com.example.cloudcards.Model.DBHelper;
+import com.example.cloudcards.Presenter.RegisterActivityPresenter;
+import com.example.cloudcards.R;
 
-public class Register extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity {
 
     EditText email, password1, password2;
     Button register_button;
-    DBHelper db;
+    RegisterActivityPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register);
-
+        presenter = new RegisterActivityPresenter(getApplicationContext());
         email = (EditText) findViewById(R.id.register_email);
         password1 = (EditText) findViewById(R.id.register_password_1);
         password2 = (EditText) findViewById(R.id.register_password_2);
         register_button = (Button) findViewById(R.id.register_button);
-        db = new DBHelper(this);
-
         register_button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -39,17 +39,7 @@ public class Register extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Please enter all fields", Toast.LENGTH_SHORT).show();
                 } else {
                     if (pass1.equals(pass2)) {
-                        Boolean checkUser = db.checkEmail(emailText);
-                        if (checkUser == false) {
-                            Boolean insert = db.insertUser(emailText, pass1);
-                            if (insert) {
-                                Toast.makeText(getApplicationContext(), "Registration Success", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(getApplicationContext(), "Registration Fail", Toast.LENGTH_SHORT).show();
-                            }
-                        } else {
-                            Toast.makeText(getApplicationContext(), "Email already registered.", Toast.LENGTH_SHORT).show();
-                        }
+                        presenter.register(emailText, pass1);
                     } else {
                         Toast.makeText(getApplicationContext(), "Passwords do not match", Toast.LENGTH_SHORT).show();
                     }
@@ -61,11 +51,11 @@ public class Register extends AppCompatActivity {
     }
 
     /**
-     * Switch to Login Activity
+     * Switch to LoginActivity
      * @param view
      */
     public void cancel(View view) {
-        Intent intent = new Intent(this, Login.class);
+        Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }
 

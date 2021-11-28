@@ -1,4 +1,4 @@
-package com.example.cloudcards;
+package com.example.cloudcards.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,24 +8,25 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import com.example.cloudcards.Presenter.LoginActivityPresenter;
+import com.example.cloudcards.R;
 
-import com.example.cloudcards.database.DBHelper;
-
-public class Login extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     EditText email, password;
     Button sign_in;
-    DBHelper db;
+    LoginActivityPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
-//        getApplicationContext().deleteDatabase("cloudcards.db");
+        // Uncomment this to test registration and login, etc.
+  //    getApplicationContext().deleteDatabase("cloudcards.db");
+        presenter = new LoginActivityPresenter(getApplicationContext());
         email = (EditText) findViewById(R.id.login_email);
         password = (EditText) findViewById(R.id.login_password);
         sign_in = (Button) findViewById(R.id.login_button);
-        db = new DBHelper(this);
 
         sign_in.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,21 +36,10 @@ public class Login extends AppCompatActivity {
                 if (emailText.equals("") || pass.equals("")) {
                     Toast.makeText(getApplicationContext(), "Please enter all the fields", Toast.LENGTH_SHORT).show();
                 } else {
-                    Boolean checkEmailPassword = db.checkEmailPassword(emailText, pass);
-                    if (checkEmailPassword == true) {
-                        Toast.makeText(getApplicationContext(), "Sign in success", Toast.LENGTH_SHORT).show();
-                        int userID = db.getUserID(emailText, pass);
-                        Intent intent = new Intent(getApplicationContext(), Homepage.class);
-                        intent.putExtra("userID", userID);
-                        startActivity(intent);
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Invalid Email and Password", Toast.LENGTH_SHORT).show();
-                    }
+                    presenter.signIn(emailText, pass);
                 }
             }
         });
-
-
     }
 
     /**
@@ -57,7 +47,7 @@ public class Login extends AppCompatActivity {
      * @param view
      */
     public void register(View view) {
-        Intent intent = new Intent(this, Register.class);
+        Intent intent = new Intent(this, RegisterActivity.class);
         startActivity(intent);
     }
 
