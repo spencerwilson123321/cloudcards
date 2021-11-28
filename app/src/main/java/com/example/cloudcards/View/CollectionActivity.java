@@ -38,15 +38,15 @@ public class CollectionActivity extends AppCompatActivity implements CloudCards.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.collection);
 
-        //backButton = findViewById(R.id.backButton);
+        backButton = findViewById(R.id.backButton);
         userID = getIntent().getIntExtra("userID", 0);
         collectionRecycler = findViewById(R.id.collection_recycler);
         presenter = new CollectionActivityPresenter(getApplicationContext(), this, userID);
         setCollectionAdapter();
         showActionBar();
-        //backButton.setOnClickListener(view -> {
-            //goBackHome(view);
-        //});
+        backButton.setOnClickListener(view -> {
+            goBackHome(view);
+        });
 
     }
     @Override
