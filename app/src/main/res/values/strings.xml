@@ -12,5 +12,6 @@
     <string name="register_button_1">Register</string>
     <string name="register_button_2">Cancel</string>
     <string name="search_hint">Search Card Name</string>
+    <string name="filter_search">Filter Collection</string>
     <string name="search_button">Search</string>
 </resources>
