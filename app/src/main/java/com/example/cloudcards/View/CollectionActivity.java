@@ -19,8 +19,6 @@ import com.example.cloudcards.CardDetail;
 import com.example.cloudcards.CloudCards;
 
 import com.example.cloudcards.CollectionAdapter;
-
-
 import com.example.cloudcards.Presenter.CollectionActivityPresenter;
 import com.example.cloudcards.R;
 

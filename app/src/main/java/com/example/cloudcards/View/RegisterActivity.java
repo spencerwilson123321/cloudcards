@@ -9,13 +9,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.cloudcards.Model.DBHelper;
 import com.example.cloudcards.Presenter.RegisterActivityPresenter;
 import com.example.cloudcards.R;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    EditText email, password1, password2;
+    EditText username, password1, password2;
     Button register_button;
     RegisterActivityPresenter presenter;
 
@@ -24,22 +23,22 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register);
         presenter = new RegisterActivityPresenter(getApplicationContext());
-        email = (EditText) findViewById(R.id.register_email);
+        username = (EditText) findViewById(R.id.register_username);
         password1 = (EditText) findViewById(R.id.register_password_1);
         password2 = (EditText) findViewById(R.id.register_password_2);
         register_button = (Button) findViewById(R.id.register_button);
         register_button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                String emailText = email.getText().toString();
+                String usernameText = username.getText().toString();
                 String pass1 = password1.getText().toString();
                 String pass2 = password2.getText().toString();
 
-                if (emailText.equals("") || pass1.equals("") || pass2.equals("")) {
+                if (usernameText.equals("") || pass1.equals("") || pass2.equals("")) {
                     Toast.makeText(getApplicationContext(), "Please enter all fields", Toast.LENGTH_SHORT).show();
                 } else {
                     if (pass1.equals(pass2)) {
-                        presenter.register(emailText, pass1);
+                        presenter.register(usernameText, pass1);
                     } else {
                         Toast.makeText(getApplicationContext(), "Passwords do not match", Toast.LENGTH_SHORT).show();
                     }
