@@ -1,9 +1,11 @@
 package com.example.cloudcards.Presenter;
 
+import android.content.Context;
+
 import com.example.cloudcards.Card;
 import com.example.cloudcards.CloudCards;
 import com.example.cloudcards.CollectionAdapter;
-import com.example.cloudcards.database.DBHelper;
+import com.example.cloudcards.Model.DBHelper;
 
 import java.util.ArrayList;
 
@@ -11,8 +13,8 @@ public class CollectionActivityPresenter implements CloudCards.CollectionActivit
     private DBHelper DB;
     private CloudCards.CollectionActivityView cView;
     private int userID;
-    public CollectionActivityPresenter(DBHelper db, CloudCards.CollectionActivityView collectionView, int uID) {
-        DB = db;
+    public CollectionActivityPresenter(Context context, CloudCards.CollectionActivityView collectionView, int uID) {
+        DB = new DBHelper(context);
         cView = collectionView;
         userID = uID;
     }

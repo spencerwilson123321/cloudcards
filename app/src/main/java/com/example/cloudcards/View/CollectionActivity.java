@@ -14,10 +14,10 @@ import com.example.cloudcards.CardDetail;
 import com.example.cloudcards.CloudCards;
 
 import com.example.cloudcards.CollectionAdapter;
-import com.example.cloudcards.Homepage;
+
 import com.example.cloudcards.Presenter.CollectionActivityPresenter;
 import com.example.cloudcards.R;
-import com.example.cloudcards.database.DBHelper;
+
 
 
 
@@ -33,7 +33,7 @@ public class CollectionActivity extends AppCompatActivity implements CloudCards.
         backButton = findViewById(R.id.backButton);
         userID = getIntent().getIntExtra("userID", 0);
         collectionRecycler = findViewById(R.id.collection_recycler);
-        presenter = new CollectionActivityPresenter(new DBHelper(getApplicationContext()), this, userID);
+        presenter = new CollectionActivityPresenter(getApplicationContext(), this, userID);
         setCollectionAdapter();
         backButton.setOnClickListener(view -> {
             goBackHome(view);
@@ -75,7 +75,7 @@ public class CollectionActivity extends AppCompatActivity implements CloudCards.
     }
     
     private void goBackHome(View view){
-        Intent i = new Intent(getApplicationContext(), Homepage.class);
+        Intent i = new Intent(getApplicationContext(), HomepageActivity.class);
         i.putExtra("userID", userID);
         startActivity(i);
     }
