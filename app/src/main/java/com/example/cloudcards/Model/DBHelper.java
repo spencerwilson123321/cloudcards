@@ -110,7 +110,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public Boolean insertUser(String email, String password){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("username", username);
+        contentValues.put("username", email);
         contentValues.put("password", password);
         long result = db.insert("users", null, contentValues);
         if (result == -1)
