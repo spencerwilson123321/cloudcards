@@ -1,4 +1,4 @@
-package com.example.cloudcards;
+package com.example.cloudcards.Model;
 
 import android.content.Context;
 import android.net.Uri;
@@ -10,6 +10,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.cloudcards.VolleyCallback;
 // import com.google.gson.JsonArray;
 
 import org.json.JSONArray;

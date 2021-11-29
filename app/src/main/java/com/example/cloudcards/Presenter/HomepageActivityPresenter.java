@@ -9,7 +9,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.SparseArray;
 import android.widget.Toast;
-import com.example.cloudcards.APIHelper;
+import com.example.cloudcards.Model.APIHelper;
 import com.example.cloudcards.Card;
 import com.example.cloudcards.VolleyCallback;
 import com.example.cloudcards.Model.DBHelper;
