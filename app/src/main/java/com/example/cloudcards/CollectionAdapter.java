@@ -15,6 +15,7 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.cloudcards.Model.ViewHolder;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -22,9 +23,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.ViewHolder> implements Filterable {
+public class CollectionAdapter extends RecyclerView.Adapter<ViewHolder> implements Filterable {
     private ArrayList<Card> cardList;
     private ArrayList<Card> cardListFull;
+    private Listener listener;
+
+    public CollectionAdapter(ArrayList<Card> cardList) {
+        this.cardList = cardList;
+        this.cardListFull = new ArrayList<>(cardList);
+    }
 
     @Override
     public Filter getFilter() {
@@ -60,28 +67,13 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
         }
     };
 
-
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        private CardView cardView;
-
-        public ViewHolder(CardView v) {
-            super(v);
-            cardView = v;
-        }
-    }
-
-    public CollectionAdapter(ArrayList<Card> cardList) {
-        this.cardList = cardList;
-        this.cardListFull = new ArrayList<>(cardList);
-    }
-
     @Override
     public int getItemCount() {
         return this.cardList.size();
     }
 
     @Override
-    public CollectionAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         CardView cv = (CardView) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.card_image, parent, false);
         return new ViewHolder(cv);
@@ -89,7 +81,7 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
 
     @Override
     public void onBindViewHolder(ViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        final CardView cardView = holder.cardView;
+        final CardView cardView = holder.getCardView();
 
         ImageView imageView = cardView.findViewById(R.id.card_image);
         Picasso.get()
@@ -106,26 +98,9 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
                     }
                 });
         imageView.setContentDescription(this.cardList.get(position).getCard_name());
-
-        cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (listener != null) {
-                    listener.onClick(cardList.get(position));
-                }
-            }
-        });
-
-
-    }
-
-    private Listener listener;
-    public interface Listener {
-        void onClick(Card cardName);
     }
 
     public void setListener(Listener listener) {
         this.listener = listener;
     }
-
 }

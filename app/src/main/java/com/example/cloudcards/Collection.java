@@ -77,13 +77,10 @@ public class Collection extends AppCompatActivity {
             collectionRecycler.setAdapter(adapter);
             StaggeredGridLayoutManager lm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
             collectionRecycler.setLayoutManager(lm);
-            adapter.setListener(new CollectionAdapter.Listener() {
-                @Override
-                public void onClick(Card cardName) {
-                    Intent i = new Intent(Collection.this, CardDetail.class);
-                    i.putExtra("cardName", cardName);
-                    startActivity(i);
-                }
+            adapter.setListener(cardName -> {
+                Intent i = new Intent(Collection.this, CardDetail.class);
+                i.putExtra("cardName", cardName);
+                startActivity(i);
             });
         }catch (Exception e) {
             System.out.println(e.getMessage());
