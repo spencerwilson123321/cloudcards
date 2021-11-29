@@ -25,6 +25,7 @@ public class LoginActivityPresenter {
             Intent intent = new Intent(loginContext, HomepageActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra("userID", userID);
+            intent.putExtra("username", username);
             loginContext.startActivity(intent);
         } else {
             Toast.makeText(loginContext, "Invalid Email and Password", Toast.LENGTH_SHORT).show();

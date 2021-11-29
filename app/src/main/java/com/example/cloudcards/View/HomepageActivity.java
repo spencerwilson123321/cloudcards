@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.example.cloudcards.Collection;
 import com.example.cloudcards.CollectionSearch;
@@ -35,6 +36,7 @@ public class HomepageActivity extends AppCompatActivity implements MenuItem.OnMe
     String storagePermission[];
     int userID;
     private HomepageActivityPresenter presenter;
+    TextView display_username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +44,8 @@ public class HomepageActivity extends AppCompatActivity implements MenuItem.OnMe
         setContentView(R.layout.homepage);
         // user ID
         userID = getIntent().getIntExtra("userID", 0);
+        display_username = findViewById(R.id.display_username);
+        display_username.setText(getIntent().getStringExtra("username"));
         // permissions
         cameraPermission = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
         storagePermission = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
