@@ -107,10 +107,10 @@ public class DBHelper extends SQLiteOpenHelper {
         return cards;
     }
 
-    public Boolean insertUser(String email, String password){
+    public Boolean insertUser(String username, String password){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("username", email);
+        contentValues.put("username", username);
         contentValues.put("password", password);
         long result = db.insert("users", null, contentValues);
         if (result == -1)

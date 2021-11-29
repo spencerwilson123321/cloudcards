@@ -96,7 +96,7 @@ public class UITest {
 //        onView(withId(R.id.register_email)).perform(replaceText("test"));
 //        onView(withId(R.id.register_password_1)).perform(replaceText("test"));
 //        onView(withId(R.id.register_password_2)).perform(replaceText("test"));
-        onView(withId(R.id.register_email)).perform(clearText(),typeText("test"));
+        onView(withId(R.id.login_username)).perform(clearText(),typeText("test"));
         onView(withId(R.id.register_password_1)).perform(clearText(),typeText("test"));
         onView(withId(R.id.register_password_2)).perform(clearText(),typeText("test"), closeSoftKeyboard());
         onView(withId(R.id.register_button)).perform(click());
@@ -107,7 +107,7 @@ public class UITest {
     public void homepage_add_card() {
 //        onView(withId(R.id.login_email)).perform(replaceText("test"));
 //        onView(withId(R.id.login_password)).perform(replaceText("test"));
-        onView(withId(R.id.login_email)).perform(clearText(),typeText("test"));
+        onView(withId(R.id.login_username)).perform(clearText(),typeText("test"));
         onView(withId(R.id.login_password)).perform(clearText(),typeText("test"), closeSoftKeyboard());
         onView(withId(R.id.login_button)).perform(click());
         onView(withId(R.id.menu)).perform(click());
@@ -168,7 +168,7 @@ public class UITest {
     public void collection_search() {
 //        onView(withId(R.id.login_email)).perform(replaceText("test"));
 //        onView(withId(R.id.login_password)).perform(replaceText("test"));
-        onView(withId(R.id.login_email)).perform(clearText(),typeText("test"));
+        onView(withId(R.id.login_username)).perform(clearText(),typeText("test"));
         onView(withId(R.id.login_password)).perform(clearText(),typeText("test"), closeSoftKeyboard());
         onView(withId(R.id.login_button)).perform(click());
 
