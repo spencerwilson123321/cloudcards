@@ -80,13 +80,10 @@ public class CollectionSearchActivity extends AppCompatActivity implements Cloud
             collectionRecycler.setAdapter(adapter);
             StaggeredGridLayoutManager lm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
             collectionRecycler.setLayoutManager(lm);
-            adapter.setListener(new Listener() {
-                @Override
-                public void onClick(Card cardName) {
-                    Intent i = new Intent(CollectionSearchActivity.this, CardDetail.class);
-                    i.putExtra("cardName", cardName);
-                    startActivity(i);
-                }
+            adapter.setListener(cardName -> {
+                Intent i = new Intent(CollectionSearchActivity.this, CardDetail.class);
+                i.putExtra("cardName", cardName);
+                startActivity(i);
             });
         }catch (Exception e) {
             System.out.println(e.getMessage());

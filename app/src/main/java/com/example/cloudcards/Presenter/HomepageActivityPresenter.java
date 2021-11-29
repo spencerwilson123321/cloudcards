@@ -9,7 +9,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.SparseArray;
 import android.widget.Toast;
-import com.example.cloudcards.APIHelper;
+import com.example.cloudcards.Model.APIHelper;
 import com.example.cloudcards.Card;
 import com.example.cloudcards.VolleyCallback;
 import com.example.cloudcards.Model.DBHelper;
@@ -81,12 +81,9 @@ public class HomepageActivityPresenter {
                 }
             }
         });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.cancel();
-                Toast.makeText(homepageContext, "Card not added to Collection", Toast.LENGTH_LONG).show();
-            }
+        builder.setNegativeButton("No", (dialogInterface, i) -> {
+            dialogInterface.cancel();
+            Toast.makeText(homepageContext, "Card not added to Collection", Toast.LENGTH_LONG).show();
         });
         builder.setTitle("Confirm Card");
         builder.show();

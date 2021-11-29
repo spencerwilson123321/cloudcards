@@ -58,25 +58,22 @@ public class HomepageActivity extends AppCompatActivity implements MenuItem.OnMe
                 Context wrapper = new ContextThemeWrapper(getApplicationContext(), R.style.PopupMenu);
                 PopupMenu dropDownMenu = new PopupMenu(wrapper, showMenu);
                 dropDownMenu.getMenuInflater().inflate(R.menu.drop_down_menu, dropDownMenu.getMenu());
-                dropDownMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        switch (menuItem.getTitle().toString()) {
-                            case "Add Card": takePhoto();
-                                break;
-                            case "View Collection":
-                                Intent intent = new Intent(getApplicationContext(), CollectionActivity.class);
-                                intent.putExtra("userID", userID);
-                                startActivity(intent);
-                                break;
-                            case "Search Card":
-                                Intent search_intent = new Intent(getApplicationContext(), CollectionSearchActivity.class);
-                                search_intent.putExtra("userID", userID);
-                                startActivity(search_intent);
-                                break;
-                        }
-                        return true;
+                dropDownMenu.setOnMenuItemClickListener(menuItem -> {
+                    switch (menuItem.getTitle().toString()) {
+                        case "Add Card": takePhoto();
+                            break;
+                        case "View Collection":
+                            Intent intent = new Intent(getApplicationContext(), CollectionActivity.class);
+                            intent.putExtra("userID", userID);
+                            startActivity(intent);
+                            break;
+                        case "Search Card":
+                            Intent search_intent = new Intent(getApplicationContext(), CollectionSearchActivity.class);
+                            search_intent.putExtra("userID", userID);
+                            startActivity(search_intent);
+                            break;
                     }
+                    return true;
                 });
                 dropDownMenu.show();
             }

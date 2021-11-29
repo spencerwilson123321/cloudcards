@@ -15,6 +15,7 @@ import android.widget.Button;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.cloudcards.Model.APIHelper;
 import com.example.cloudcards.Presenter.CollectionAdapterPresenter;
 import com.example.cloudcards.View.HomepageActivity;
 import com.example.cloudcards.Model.DBHelper;
