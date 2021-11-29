@@ -23,7 +23,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create Table users (id INTEGER primary key AUTOINCREMENT, email TEXT, password TEXT)");
+        db.execSQL("create Table users (id INTEGER primary key AUTOINCREMENT, username TEXT, password TEXT)");
         db.execSQL("create Table cards (userID INTEGER, " +
                 "id INTEGER, " +
                 "card_name TEXT, " +
@@ -86,10 +86,31 @@ public class DBHelper extends SQLiteOpenHelper {
         return cards;
     };
 
+    public ArrayList<Card> getCardsByName(String search_val, int userID) {
+        ArrayList<Card> cards = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("Select * from cards where userID = ? " +
+                "and card_name LIKE '%"+search_val+"%' ", new String[] {String.valueOf(userID)});
+        if(cursor.moveToFirst()) {
+            do {
+                cards.add(
+                        new Card(Integer.parseInt(cursor.getString(1)),
+                                cursor.getString(2),
+                                cursor.getString(3),
+                                cursor.getString(4),
+                                cursor.getString(5),
+                                Integer.parseInt(cursor.getString(6)),
+                                Integer.parseInt(cursor.getString(7)))
+                );
+            } while (cursor.moveToNext());
+        }
+        return cards;
+    }
+
     public Boolean insertUser(String email, String password){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("email", email);
+        contentValues.put("username", username);
         contentValues.put("password", password);
         long result = db.insert("users", null, contentValues);
         if (result == -1)
@@ -98,9 +119,9 @@ public class DBHelper extends SQLiteOpenHelper {
             return true;
     }
 
-    public int getUserID(String email, String password) {
+    public int getUserID(String username, String password) {
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery("Select * from users where email = ? and password = ?", new String[] {email, password});
+        Cursor cursor = db.rawQuery("Select * from users where username = ? and password = ?", new String[] {username, password});
         int id = -1;
         if (cursor.moveToFirst()) {
             return cursor.getInt(0);
@@ -108,18 +129,18 @@ public class DBHelper extends SQLiteOpenHelper {
         return id;
     }
 
-    public Boolean checkEmail(String email) {
+    public Boolean checkUsername(String username) {
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery("Select * from users where email = ?", new String[] {email});
+        Cursor cursor = db.rawQuery("Select * from users where username = ?", new String[] {username});
         if (cursor.getCount() > 0)
             return true;
         else
             return false;
     }
 
-    public Boolean checkEmailPassword(String email, String password) {
+    public Boolean checkUsernamePassword(String username, String password) {
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery("Select * from users where email = ? and password = ?", new String[] {email, password});
+        Cursor cursor = db.rawQuery("Select * from users where username = ? and password = ?", new String[] {username, password});
         if (cursor.getCount() > 0)
             return true;
         else
