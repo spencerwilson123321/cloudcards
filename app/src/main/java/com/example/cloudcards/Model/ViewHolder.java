@@ -1,7 +1,5 @@
 package com.example.cloudcards.Model;
 
-import android.view.View;
-
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
