@@ -66,7 +66,7 @@ public class HomepageActivity extends AppCompatActivity implements MenuItem.OnMe
                                 startActivity(intent);
                                 break;
                             case "Search Card":
-                                Intent search_intent = new Intent(getApplicationContext(), CollectionSearch.class);
+                                Intent search_intent = new Intent(getApplicationContext(), CollectionSearchActivity.class);
                                 search_intent.putExtra("userID", userID);
                                 startActivity(search_intent);
                                 break;
