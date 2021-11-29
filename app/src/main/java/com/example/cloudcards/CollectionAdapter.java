@@ -98,6 +98,11 @@ public class CollectionAdapter extends RecyclerView.Adapter<ViewHolder> implemen
                     }
                 });
         imageView.setContentDescription(this.cardList.get(position).getCard_name());
+        cardView.setOnClickListener(view -> {
+            if (listener != null) {
+                listener.onClick(cardList.get(position));
+            }
+        });
     }
 
     public void setListener(Listener listener) {
