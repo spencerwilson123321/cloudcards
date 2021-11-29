@@ -16,7 +16,8 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import com.example.cloudcards.Card;
 import com.example.cloudcards.CardDetail;
 import com.example.cloudcards.CloudCards;
-import com.example.cloudcards.CollectionAdapter;
+import com.example.cloudcards.Listener;
+import com.example.cloudcards.Presenter.CollectionAdapterPresenter;
 import com.example.cloudcards.CollectionSearch;
 import com.example.cloudcards.Model.DBHelper;
 import com.example.cloudcards.Presenter.CollectionSearchActivityPresenter;
@@ -75,11 +76,11 @@ public class CollectionSearchActivity extends AppCompatActivity implements Cloud
 
     private void setCollectionAdapter(ArrayList<Card> cards) {
         try {
-            CollectionAdapter adapter = new CollectionAdapter(cards);
+            CollectionAdapterPresenter adapter = new CollectionAdapterPresenter (cards);
             collectionRecycler.setAdapter(adapter);
             StaggeredGridLayoutManager lm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
             collectionRecycler.setLayoutManager(lm);
-            adapter.setListener(new CollectionAdapter.Listener() {
+            adapter.setListener(new Listener() {
                 @Override
                 public void onClick(Card cardName) {
                     Intent i = new Intent(CollectionSearchActivity.this, CardDetail.class);

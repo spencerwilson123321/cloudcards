@@ -96,7 +96,7 @@ public class UITest {
 //        onView(withId(R.id.register_email)).perform(replaceText("test"));
 //        onView(withId(R.id.register_password_1)).perform(replaceText("test"));
 //        onView(withId(R.id.register_password_2)).perform(replaceText("test"));
-        onView(withId(R.id.login_username)).perform(clearText(),typeText("test"));
+        onView(withId(R.id.register_username)).perform(clearText(),typeText("test"));
         onView(withId(R.id.register_password_1)).perform(clearText(),typeText("test"));
         onView(withId(R.id.register_password_2)).perform(clearText(),typeText("test"), closeSoftKeyboard());
         onView(withId(R.id.register_button)).perform(click());

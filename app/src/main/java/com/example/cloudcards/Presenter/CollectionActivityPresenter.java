@@ -24,12 +24,13 @@ public class CollectionActivityPresenter implements CloudCards.CollectionActivit
         context = c;
         cView = collectionView;
         userID = uID;
+    }
 
     @Override
     public void go_CollectionInfo() {
         ArrayList<Card> cards = DB.getCardsByUserID(userID);
         //model returns data to presenter
-        adapter = new CollectionAdapter(cards);
+        adapter = new CollectionAdapterPresenter(cards);
         CollectionAdapterPresenter adapter = new CollectionAdapterPresenter(cards);
         //returns data to view
 
