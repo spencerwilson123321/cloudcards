@@ -1,8 +1,6 @@
 package com.example.cloudcards.View;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -16,10 +14,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import com.example.cloudcards.Card;
 import com.example.cloudcards.CardDetail;
 import com.example.cloudcards.CloudCards;
-import com.example.cloudcards.Listener;
 import com.example.cloudcards.Presenter.CollectionAdapterPresenter;
-import com.example.cloudcards.CollectionSearch;
-import com.example.cloudcards.Model.DBHelper;
 import com.example.cloudcards.Presenter.CollectionSearchActivityPresenter;
 import com.example.cloudcards.R;
 

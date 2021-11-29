@@ -19,8 +19,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.PopupMenu;
 import android.widget.Toast;
-import com.example.cloudcards.Collection;
-import com.example.cloudcards.CollectionSearch;
+
 import com.example.cloudcards.Presenter.HomepageActivityPresenter;
 import com.example.cloudcards.R;
 import com.theartofdev.edmodo.cropper.CropImage;
