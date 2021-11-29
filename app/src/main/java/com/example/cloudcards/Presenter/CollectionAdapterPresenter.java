@@ -1,4 +1,4 @@
-package com.example.cloudcards;
+package com.example.cloudcards.Presenter;
 
 import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
@@ -15,7 +15,10 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.cloudcards.Card;
+import com.example.cloudcards.Listener;
 import com.example.cloudcards.Model.ViewHolder;
+import com.example.cloudcards.R;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -23,12 +26,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class CollectionAdapter extends RecyclerView.Adapter<ViewHolder> implements Filterable {
+public class CollectionAdapterPresenter extends RecyclerView.Adapter<ViewHolder> implements Filterable {
     private ArrayList<Card> cardList;
     private ArrayList<Card> cardListFull;
     private Listener listener;
 
-    public CollectionAdapter(ArrayList<Card> cardList) {
+    public CollectionAdapterPresenter(ArrayList<Card> cardList) {
         this.cardList = cardList;
         this.cardListFull = new ArrayList<>(cardList);
     }

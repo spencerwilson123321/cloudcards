@@ -1,6 +1,6 @@
 package com.example.cloudcards;
 
-import android.view.View;
+import com.example.cloudcards.Presenter.CollectionAdapterPresenter;
 
 public interface CloudCards {
     interface CollectionActivityPresenter {
@@ -8,7 +8,7 @@ public interface CloudCards {
         void onDestroy();
     }
     interface CollectionActivityView {
-        void showCollection(CollectionAdapter adapter);
+        void showCollection(CollectionAdapterPresenter adapter);
 
     }
 

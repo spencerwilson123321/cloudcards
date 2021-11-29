@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.cloudcards.Presenter.CollectionAdapterPresenter;
 import com.example.cloudcards.View.HomepageActivity;
 import com.example.cloudcards.Model.DBHelper;
 
@@ -86,7 +87,7 @@ public class CollectionSearch extends AppCompatActivity {
 
     private void setCollectionAdapter(ArrayList<Card> cards) {
         try {
-            CollectionAdapter adapter = new CollectionAdapter(cards);
+            CollectionAdapterPresenter adapter = new CollectionAdapterPresenter(cards);
             collectionRecycler.setAdapter(adapter);
             StaggeredGridLayoutManager lm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
             collectionRecycler.setLayoutManager(lm);

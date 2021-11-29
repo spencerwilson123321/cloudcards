@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import com.example.cloudcards.CardDetail;
 import com.example.cloudcards.CloudCards;
 
-import com.example.cloudcards.CollectionAdapter;
+import com.example.cloudcards.Presenter.CollectionAdapterPresenter;
 
 
 import com.example.cloudcards.Presenter.CollectionActivityPresenter;
@@ -31,7 +31,7 @@ public class CollectionActivity extends AppCompatActivity implements CloudCards.
     private CollectionActivityPresenter presenter;
     private Button backButton;
     private RecyclerView collectionRecycler;
-    private CollectionAdapter tmpAdapter;
+    private CollectionAdapterPresenter tmpAdapter;
     private int userID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +88,7 @@ public class CollectionActivity extends AppCompatActivity implements CloudCards.
     }
 
     @Override
-    public void showCollection(CollectionAdapter adapter) {
+    public void showCollection(CollectionAdapterPresenter adapter) {
         tmpAdapter = adapter;
         collectionRecycler.setAdapter(adapter);
         StaggeredGridLayoutManager lm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
