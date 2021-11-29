@@ -1,37 +1,32 @@
 package com.example.cloudcards;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.ContextThemeWrapper;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.PopupMenu;
+
 import androidx.appcompat.widget.SearchView;
-import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.cloudcards.Presenter.CollectionAdapterPresenter;
 import com.example.cloudcards.View.HomepageActivity;
 import com.example.cloudcards.Model.DBHelper;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.concurrent.CompletableFuture;
 
 public class Collection extends AppCompatActivity {
     private Button backButton;
     private DBHelper DB;
 
     private APIHelper API;
-    private CollectionAdapter adapter;
+    private CollectionAdapterPresenter adapter;
     int userID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,17 +68,14 @@ public class Collection extends AppCompatActivity {
             //model returns data to presenter
             //returns data to view
             //              view
-            adapter = new CollectionAdapter(cards);
+            adapter = new CollectionAdapterPresenter(cards);
             collectionRecycler.setAdapter(adapter);
             StaggeredGridLayoutManager lm = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
             collectionRecycler.setLayoutManager(lm);
-            adapter.setListener(new CollectionAdapter.Listener() {
-                @Override
-                public void onClick(Card cardName) {
-                    Intent i = new Intent(Collection.this, CardDetail.class);
-                    i.putExtra("cardName", cardName);
-                    startActivity(i);
-                }
+            adapter.setListener(cardName -> {
+                Intent i = new Intent(Collection.this, CardDetail.class);
+                i.putExtra("cardName", cardName);
+                startActivity(i);
             });
         }catch (Exception e) {
             System.out.println(e.getMessage());
