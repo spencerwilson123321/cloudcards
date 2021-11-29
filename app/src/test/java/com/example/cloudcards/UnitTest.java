@@ -1,7 +1,6 @@
 package com.example.cloudcards;
 
 import org.junit.Test;
-import com.example.cloudcards.APIHelper;
 
 import static org.junit.Assert.*;
 
@@ -23,6 +22,13 @@ public class UnitTest {
         assertEquals("4U", testCard.getCard_mana());
         assertEquals(3, testCard.getPower());
         assertEquals(3, testCard.getToughness());
-
     }
+
+//    @Test
+//    public void invalidInput(){
+//
+//    }
+
+    //CardDetail
+
 }
