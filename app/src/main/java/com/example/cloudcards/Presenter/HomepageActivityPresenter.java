@@ -81,12 +81,9 @@ public class HomepageActivityPresenter {
                 }
             }
         });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.cancel();
-                Toast.makeText(homepageContext, "Card not added to Collection", Toast.LENGTH_LONG).show();
-            }
+        builder.setNegativeButton("No", (dialogInterface, i) -> {
+            dialogInterface.cancel();
+            Toast.makeText(homepageContext, "Card not added to Collection", Toast.LENGTH_LONG).show();
         });
         builder.setTitle("Confirm Card");
         builder.show();
