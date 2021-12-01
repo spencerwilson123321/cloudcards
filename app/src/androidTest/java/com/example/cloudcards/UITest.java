@@ -71,6 +71,7 @@ import org.junit.runner.RunWith;
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.rule.GrantPermissionRule;
 import androidx.test.runner.intent.IntentCallback;
 import androidx.test.runner.intent.IntentMonitorRegistry;
 
@@ -199,9 +200,9 @@ public class UITest {
 //        onView(isAssignableFrom(AutoCompleteTextView.class)).perform(replaceText("squee"));
 //        onView(withId(R.id.collection_recycler)).perform(click());
         onView(isAssignableFrom(AutoCompleteTextView.class))
-                .perform(clearText(), typeText("Jhessian Thief"), closeSoftKeyboard());
-
+//                .perform(clearText(), typeText("Jhessian Thief"), closeSoftKeyboard());
+                    .perform(clearText(), typeText("Turret Ogre"), closeSoftKeyboard());
         onView(withId(R.id.collection_main)).perform(click());
-        onView(withId(R.id.collection_recycler)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+//        onView(withId(R.id.collection_recycler)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
     }
 }
